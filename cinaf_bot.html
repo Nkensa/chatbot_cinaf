@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinaf Bot</title>
+</head>
+<body>
+    
+    <h1>Bienvenue sur mon chatbot !</h1>
+    <!-- Div pour le chatbot -->
+    <div id="chatbot"></div>
+
+    <script src="https://cdn.botpress.cloud/webchat/v0/inject.js"></script>
+    <script>
+        window.botpressWebChat.init({
+            hostUrl: 'https://cdn.botpress.cloud/',
+            botId: '6feea232-9063-444d-a303-d80ba2cf5a7d',
+            extraStylesheet: 'style.css',  // Lien vers ton fichier CSS personnalisé
+        });
+    </script>
+</body>
+</html>

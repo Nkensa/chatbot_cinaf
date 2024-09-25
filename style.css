@@ -1,0 +1,21 @@
+/* Changer la couleur de fond du widget */
+.bp-widget-webchat {
+    background-color: #171515;
+}
+
+/* Changer la couleur du texte des messages */
+.bp-message-content {
+    color: #fdfcfc;
+}
+
+/* Personnaliser les boutons d'actions */
+.bp-btn {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Changer l'apparence de la boîte de saisie */
+.bp-input {
+    border-radius: 5px;
+    padding: 10px;
+}

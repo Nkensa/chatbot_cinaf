@@ -1,0 +1,3911 @@
+{
+  "version": "1.12",
+  "settings": {
+    "defaultLanguage": "en",
+    "languages": [
+      "en"
+    ],
+    "description": "",
+    "id": "6feea232-9063-444d-a303-d80ba2cf5a7d",
+    "inactivityTimeout": 30,
+    "botVariables": [],
+    "userVariables": [
+      {
+        "id": "var-84666c87f3",
+        "name": "UserAnswer",
+        "description": "",
+        "type": "string",
+        "scope": "user",
+        "defaultValue": ""
+      }
+    ],
+    "nodeRepetitionLimit": 3,
+    "configVariables": {
+      "": ""
+    },
+    "cognitiveConfigs": {
+      "openAi": {}
+    },
+    "useLlmz": true,
+    "defaultBestModel": "openai__gpt-4o-2024-05-13",
+    "defaultFastModel": "openai__gpt-4o-mini-2024-07-18",
+    "useClient": true,
+    "llmzVersion": "17-Aug-2024"
+  },
+  "flows": [
+    {
+      "id": "wf-error",
+      "name": "Error",
+      "startNode": "nd-98dc0bcc87",
+      "variables": [],
+      "links": [
+        {
+          "id": "edg-1cb5862648",
+          "source": "nd-98dc0bcc87",
+          "sourcePort": "trs-02c7129430",
+          "target": "nd-58fca56e01"
+        },
+        {
+          "id": "edg-1c28c96d6a",
+          "source": "nd-58fca56e01",
+          "sourcePort": "nd-58fca56e01",
+          "target": "nd-e05f59dd66"
+        }
+      ],
+      "nodes": [
+        {
+          "comment": "<p><strong><span style=\"font-size: 18px\">⛔️ When something goes wrong</span></strong></p><p><br>This workflow is executed when there's an <strong>unexpected error</strong> in one of the other workflows.</p><p></p><p>You can use this to inform the user of the situation before ending the conversation.</p>",
+          "type": "comment",
+          "id": "nd-8ff3d7d295",
+          "name": "Comment1",
+          "deletable": true,
+          "instructions": [],
+          "height": 148,
+          "width": 401,
+          "x": 90,
+          "y": -45
+        },
+        {
+          "instructions": [
+            {
+              "id": "ins-2762f70004",
+              "type": "content",
+              "content": {
+                "type": "text",
+                "text": {
+                  "staticValue": "Sorry, an error occurred. Please try again later",
+                  "dynamicValue": "",
+                  "valueType": "static"
+                },
+                "typing": {
+                  "valueType": "static",
+                  "staticValue": true
+                }
+              },
+              "nodeId": "nd-58fca56e01",
+              "transitions": []
+            }
+          ],
+          "defaultTransition": {
+            "targetNodeId": "nd-e05f59dd66"
+          },
+          "type": "standard",
+          "id": "nd-58fca56e01",
+          "name": "Handler",
+          "deletable": true,
+          "x": 450,
+          "y": 120
+        },
+        {
+          "id": "nd-98dc0bcc87",
+          "name": "On_Error",
+          "type": "entry",
+          "deletable": false,
+          "variables": [],
+          "instructions": [
+            {
+              "id": "trs-02c7129430",
+              "type": "transition",
+              "condition": {
+                "type": "expression",
+                "payload": "true"
+              },
+              "destination": {
+                "node": "nd-58fca56e01"
+              },
+              "transitions": [],
+              "nodeId": "nd-98dc0bcc87"
+            }
+          ],
+          "x": 90,
+          "y": 120
+        },
+        {
+          "id": "nd-e05f59dd66",
+          "name": "End",
+          "type": "end",
+          "variables": [],
+          "deletable": false,
+          "instructions": [
+            {
+              "id": "trs-945140a646",
+              "type": "transition",
+              "condition": {
+                "type": "expression",
+                "payload": "true"
+              },
+              "destination": {
+                "node": "END"
+              },
+              "transitions": [],
+              "nodeId": "nd-e05f59dd66"
+            }
+          ],
+          "x": 810,
+          "y": 120
+        }
+      ]
+    },
+    {
+      "id": "wf-timeout",
+      "name": "Timeout",
+      "startNode": "nd-9f7f3268ac",
+      "variables": [],
+      "links": [
+        {
+          "id": "edg-b0d2adcd13",
+          "source": "nd-e6c012a652",
+          "sourcePort": "nd-e6c012a652",
+          "target": "nd-199fdcf439"
+        },
+        {
+          "id": "edg-6d17a0591b",
+          "source": "nd-9f7f3268ac",
+          "sourcePort": "trs-0c7a9a0003",
+          "target": "nd-e6c012a652"
+        }
+      ],
+      "nodes": [
+        {
+          "instructions": [],
+          "defaultTransition": {
+            "targetNodeId": "nd-199fdcf439"
+          },
+          "type": "standard",
+          "id": "nd-e6c012a652",
+          "name": "Handler",
+          "deletable": true,
+          "x": 435,
+          "y": 105
+        },
+        {
+          "comment": "<p><strong><span style=\"font-size: 18px\">⌛️ When conversation times out</span></strong></p><p><br>This workflow is executed when the conversation <strong>times out</strong> before it had time to flow to an <strong>End Node</strong>.</p><p></p><p>The <strong>Timeout Delay</strong> is configurable in the <strong>Chatbot Settings.</strong></p><p></p><p>You can use this to inform the user of the situation before ending the conversation.</p>",
+          "type": "comment",
+          "id": "nd-441efa6c42",
+          "name": "Comment1",
+          "deletable": true,
+          "instructions": [],
+          "height": 173,
+          "width": 401,
+          "x": 105,
+          "y": -90
+        },
+        {
+          "id": "nd-9f7f3268ac",
+          "name": "On_Timeout",
+          "type": "entry",
+          "deletable": false,
+          "variables": [],
+          "instructions": [
+            {
+              "id": "trs-0c7a9a0003",
+              "type": "transition",
+              "condition": {
+                "type": "expression",
+                "payload": "true"
+              },
+              "destination": {
+                "node": "nd-e6c012a652"
+              },
+              "transitions": []
+            }
+          ],
+          "x": 100,
+          "y": 100
+        },
+        {
+          "id": "nd-199fdcf439",
+          "name": "End",
+          "type": "end",
+          "variables": [],
+          "deletable": false,
+          "instructions": [
+            {
+              "id": "trs-bf76943d55",
+              "type": "transition",
+              "condition": {
+                "type": "expression",
+                "payload": "true"
+              },
+              "destination": {
+                "node": "END"
+              },
+              "transitions": []
+            }
+          ],
+          "x": 795,
+          "y": 105
+        }
+      ]
+    },
+    {
+      "id": "wf-conversation-end",
+      "name": "Conversation End",
+      "startNode": "nd-c0d3bd2c92",
+      "variables": [],
+      "links": [
+        {
+          "id": "edg-3cb8028ff6",
+          "source": "nd-c0d3bd2c92",
+          "sourcePort": "trs-92c6f93b0c",
+          "target": "nd-2db7499cc6"
+        },
+        {
+          "id": "edg-8a88f687a0",
+          "source": "nd-2db7499cc6",
+          "sourcePort": "nd-2db7499cc6",
+          "target": "nd-d0c2a6be81"
+        }
+      ],
+      "nodes": [
+        {
+          "instructions": [],
+          "defaultTransition": {
+            "targetNodeId": "nd-d0c2a6be81"
+          },
+          "type": "standard",
+          "id": "nd-2db7499cc6",
+          "name": "Handler",
+          "deletable": true,
+          "x": 420,
+          "y": 105
+        },
+        {
+          "comment": "<p><strong><span style=\"font-size: 18px\">👋 Before Conversation Ends</span></strong></p><p><br>This workflow is executed when right before the conversation <strong>Ends Explicitly.</strong></p><p></p><p>An <strong>Explicit Ending</strong> happens when a workflow transitions on an <strong>End Node</strong>.</p>",
+          "type": "comment",
+          "id": "nd-6d5d3f41dd",
+          "name": "Comment1",
+          "deletable": true,
+          "instructions": [],
+          "height": 148,
+          "width": 461,
+          "x": 105,
+          "y": -45
+        },
+        {
+          "id": "nd-c0d3bd2c92",
+          "name": "On_Explicit_Ending",
+          "type": "entry",
+          "deletable": false,
+          "variables": [],
+          "instructions": [
+            {
+              "id": "trs-92c6f93b0c",
+              "type": "transition",
+              "condition": {
+                "type": "expression",
+                "payload": "true"
+              },
+              "destination": {
+                "node": "nd-2db7499cc6"
+              },
+              "transitions": []
+            }
+          ],
+          "x": 100,
+          "y": 100
+        },
+        {
+          "id": "nd-d0c2a6be81",
+          "name": "End",
+          "type": "end",
+          "variables": [],
+          "deletable": false,
+          "instructions": [
+            {
+              "id": "trs-7004dbb2b6",
+              "type": "transition",
+              "condition": {
+                "type": "expression",
+                "payload": "true"
+              },
+              "destination": {
+                "node": "END"
+              },
+              "transitions": []
+            }
+          ],
+          "x": 780,
+          "y": 105
+        }
+      ]
+    },
+    {
+      "topicId": "tpc-global",
+      "id": "wf-main",
+      "name": "Main",
+      "startNode": "nd-2bb9db230d",
+      "variables": [
+        {
+          "id": "var-05c12f1170",
+          "name": "question",
+          "type": "string",
+          "description": "",
+          "scope": "workflow"
+        },
+        {
+          "defaultValue": "",
+          "type": "string",
+          "name": "UserAnswer",
+          "description": "",
+          "id": "var-a073a6680c",
+          "scope": "workflow",
+          "secret": false
+        }
+      ],
+      "links": [],
+      "nodes": [
+        {
+          "id": "nd-2bb9db230d",
+          "name": "Start",
+          "type": "start",
+          "deletable": false,
+          "instructions": [
+            {
+              "id": "trs-8b0779edc5",
+              "type": "transition",
+              "condition": {
+                "type": "expression",
+                "payload": "true"
+              },
+              "destination": {
+                "node": "nd-d6dca742cb"
+              },
+              "transitions": [],
+              "nodeId": "nd-2bb9db230d"
+            }
+          ],
+          "x": -870,
+          "y": -450,
+          "kbPriority": {
+            "enabled": false,
+            "searchScope": "specific",
+            "kbs": []
+          }
+        },
+        {
+          "id": "nd-80ac4ff158",
+          "name": "End",
+          "type": "end",
+          "deletable": false,
+          "instructions": [
+            {
+              "id": "trs-0260f5e672",
+              "type": "transition",
+              "condition": {
+                "type": "expression",
+                "payload": "true"
+              },
+              "destination": {
+                "node": "END"
+              },
+              "transitions": [],
+              "nodeId": "nd-80ac4ff158"
+            }
+          ],
+          "x": 2400,
+          "y": -1035
+        },
+        {
+          "type": "autonomous",
+          "deletable": true,
+          "x": -225,
+          "y": 255,
+          "instructions": [
+            {
+              "id": "ins-ace8f62866",
+              "type": "autonomous",
+              "toolType": "integration",
+              "origin": "integration",
+              "label": "Web Search",
+              "category": "Execute",
+              "integrationId": "browser",
+              "actionName": "webSearch",
+              "nodeId": "nd-54aa0c19de",
+              "includeSites": {
+                "valueType": "static",
+                "staticValue": [],
+                "dynamicValue": ""
+              },
+              "manualFields": [
+                "browsePages"
+              ],
+              "query": "",
+              "count": {
+                "valueType": "static",
+                "staticValue": 10,
+                "dynamicValue": ""
+              },
+              "transitions": []
+            },
+            {
+              "id": "ins-1465ce0650",
+              "agentId": "KnowledgeAgent",
+              "toolId": "knowledge-query",
+              "toolType": "agent",
+              "type": "autonomous",
+              "label": "Query Knowledge Bases",
+              "category": "Agents",
+              "nodeId": "nd-54aa0c19de",
+              "transitions": []
+            }
+          ],
+          "id": "nd-54aa0c19de",
+          "name": "AutonomousNode",
+          "writableVariables": [],
+          "allowConversation": true,
+          "guidelines": {
+            "valueType": "dynamic",
+            "dynamicValue": "You are an Autonomous Agent. You can search the web and look for answers in the knowledge base."
+          }
+        },
+        {
+          "type": "comment",
+          "deletable": true,
+          "x": -585,
+          "y": -600,
+          "instructions": [],
+          "comment": "<p>This is the default node. It can search the web.</p><p></p><p>Change instructions and add new sub-workflows to start changing its behaviour.</p><p></p><p>Try asking \"What's Botpress?\"</p>",
+          "id": "nd-9c5f9a0939",
+          "name": "Comment1",
+          "height": 163,
+          "width": 296
+        },
+        {
+          "type": "standard",
+          "deletable": true,
+          "x": 90,
+          "y": -570,
+          "instructions": [
+            {
+              "id": "ins-1a1cd50e8a",
+              "type": "capture",
+              "entityId": "prompts://SingleChoice/v1",
+              "entityName": "Single Choice",
+              "kbPriority": {
+                "enabled": true,
+                "searchScope": "specific",
+                "kbs": [
+                  "kb-00a5876092"
+                ]
+              },
+              "nodeId": "nd-8bf8939b68",
+              "question": {
+                "staticValue": "",
+                "dynamicValue": " Comment puis-je vous aider en ce jour ?",
+                "valueType": "dynamic"
+              },
+              "validation": {
+                "validators": []
+              },
+              "choice": {
+                "options": {
+                  "valueType": "static",
+                  "staticValue": [
+                    {
+                      "label": {
+                        "valueType": "dynamic",
+                        "dynamicValue": "FAQ Générales"
+                      },
+                      "value": "FAQ Générales",
+                      "enabled": true
+                    },
+                    {
+                      "label": {
+                        "valueType": "dynamic",
+                        "dynamicValue": "Problèmes techniques"
+                      },
+                      "value": "Problèmes techniques",
+                      "enabled": true
+                    },
+                    {
+                      "label": {
+                        "valueType": "dynamic",
+                        "dynamicValue": "Questions sur l'abonnement"
+                      },
+                      "value": "Questions sur l'abonnement",
+                      "enabled": true
+                    },
+                    {
+                      "label": {
+                        "valueType": "dynamic",
+                        "dynamicValue": "Autres questions"
+                      },
+                      "value": "Autres questions",
+                      "enabled": true
+                    }
+                  ],
+                  "dynamicValue": ""
+                }
+              },
+              "retry": {
+                "maxRetries": 2,
+                "retryMessage": {
+                  "staticValue": "",
+                  "dynamicValue": "",
+                  "valueType": "dynamic"
+                }
+              },
+              "cancellation": {
+                "cancellable": true,
+                "confirmCancel": true,
+                "confirmCancelMessage": {
+                  "staticValue": "",
+                  "dynamicValue": "",
+                  "valueType": "static"
+                }
+              },
+              "handleFailure": false,
+              "historyLookback": 0,
+              "skipIfAlreadyFilled": false,
+              "transitions": [
+                {
+                  "id": "trs-967a7c88ef",
+                  "type": "transition",
+                  "label": "FAQ Générales",
+                  "condition": {
+                    "type": "expression",
+                    "payload": "__CHOICE=FAQ Générales"
+                  },
+                  "destination": {
+                    "node": "nd-10bed14265"
+                  }
+                },
+                {
+                  "id": "trs-2155435fba",
+                  "type": "transition",
+                  "label": "Problèmes techniques",
+                  "condition": {
+                    "type": "expression",
+                    "payload": "__CHOICE=Problèmes techniques"
+                  },
+                  "destination": {
+                    "node": "nd-3c07f4464a"
+                  }
+                },
+                {
+                  "id": "trs-9615a7d9d3",
+                  "type": "transition",
+                  "label": "Questions sur l'abonnement",
+                  "condition": {
+                    "type": "expression",
+                    "payload": "__CHOICE=Questions sur l'abonnement"
+                  },
+                  "destination": {
+                    "node": "nd-f6f8163027"
+                  }
+                },
+                {
+                  "id": "trs-b4e93cfdb8",
+                  "type": "transition",
+                  "label": "Autres questions",
+                  "condition": {
+                    "type": "expression",
+                    "payload": "__CHOICE=Autres questions"
+                  },
+                  "destination": {
+                    "node": "nd-352e824d21"
+                  }
+                }
+              ],
+              "prompt": {
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "You are ExtractGPT and your only goal is to generate useful content in JSON format for developers to parse and use. You don't know any other language than JSON."
+                  },
+                  {
+                    "role": "user",
+                    "content": "```typescript\n/** The user answer to the question \"Which one would you like? Choices: [ 1) Red Apple, 2) Yellow Apple, 3) Dark Banana ]\" */\ninterface Output = { choice: {{CHOICES_TYPINGS}} }\n```\n\nHere is a conversation between me and a user. Transcript:\n\"\"\"\n(...)\nagent: Which one would you like? Choices: [ 1) Red Apple, 2) Yellow Apple, 3) Dark Banana ]\nuser: I will go with the second one please\n\"\"\""
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "{\"choice\":\"Yellow Apple\"}"
+                  },
+                  {
+                    "role": "user",
+                    "content": "\nNow, forget about the previous transcripts. These were just examples, don't consider those as valid transcripts for this new task.\n\n###\n\nThe current Date is {{CURRENT_DATE_TIME}}.\n\nAt this point of the conversation, I need require the user to fill the output in following JSON output to complete the task.\nIf more than one property, try to extract each of them the best you can.\n\n```typescript\n/** The user answer to the question \"{{QUESTION}}\" */\ninterface Output = { choice: {{CHOICES_TYPINGS}} }\n```\n\nHere is a conversation between me and a user. Transcript:\n\"\"\"\n(...)\n{{TRANSCRIPT}}\n\"\"\"\n\nIn the last user message, here are the entities found:\n\"\"\"\nENTITIES_IDENTIFIED\n\"\"\"\n\nI need you to extract from the conversation transcript above the values the user has provided.\nIf the user has not provided the information I need, I need you to set the value of the missing answer properties to null.\nHave some tolerance to typos and variations in how the user selects from the possible values.\n\n\n\nNow, please reply to me with the above JSON output and nothing but JSON.\nYou should not explain your answer and should not talk back to me. Just JSON."
+                  }
+                ],
+                "model": "gpt-3.5-turbo",
+                "temperature": 0
+              }
+            },
+            {
+              "id": "ins-c42a61d7c6",
+              "type": "transition",
+              "condition": {
+                "type": "expression",
+                "payload": "turn.KnowledgeAgent.responded"
+              },
+              "label": "Don't Know",
+              "generative": {
+                "label": "Don't Know",
+                "suggestion": {
+                  "condition": "true"
+                },
+                "properties": {
+                  "condition": false
+                }
+              },
+              "category": "Flow Logic",
+              "nodeId": "nd-8bf8939b68",
+              "description": "",
+              "destination": {
+                "node": "nd-5e5adaf62a"
+              },
+              "transitions": []
+            }
+          ],
+          "defaultTransition": {
+            "targetNodeId": null
+          },
+          "id": "nd-8bf8939b68",
+          "name": "Acceuil"
+        },
+        {
+          "type": "standard",
+          "deletable": true,
+          "x": 450,
+          "y": -1065,
+          "instructions": [
+            {
+              "id": "ins-0009602cc1",
+              "type": "capture",
+              "entityId": "prompts://SingleChoice/v1",
+              "entityName": "Single Choice",
+              "kbPriority": {
+                "enabled": true,
+                "searchScope": "all",
+                "kbs": []
+              },
+              "nodeId": "nd-10bed14265",
+              "question": {
+                "staticValue": "",
+                "dynamicValue": "Que voulez-vous savoir ?",
+                "valueType": "dynamic"
+              },
+              "validation": {
+                "validators": []
+              },
+              "choice": {
+                "options": {
+                  "valueType": "static",
+                  "staticValue": [
+                    {
+                      "label": {
+                        "valueType": "dynamic",
+                        "dynamicValue": "Qui sommes-nous ?"
+                      },
+                      "value": "Qui sommes-nous ?",
+                      "enabled": true
+                    },
+                    {
+                      "label": {
+                        "valueType": "dynamic",
+                        "dynamicValue": "Comment nous contacter ?"
+                      },
+                      "value": "Comment nous contacter ?",
+                      "enabled": true
+                    },
+                    {
+                      "label": {
+                        "valueType": "dynamic",
+                        "dynamicValue": "Quelle est notre mission ?"
+                      },
+                      "value": "Quelle est notre mission ?",
+                      "enabled": true
+                    },
+                    {
+                      "label": {
+                        "valueType": "dynamic",
+                        "dynamicValue": "Où se trouve le siège de Cinaf ?"
+                      },
+                      "value": "Où se trouve le siège de Cinaf ?",
+                      "enabled": true
+                    }
+                  ],
+                  "dynamicValue": ""
+                }
+              },
+              "retry": {
+                "maxRetries": 2,
+                "retryMessage": {
+                  "staticValue": "",
+                  "dynamicValue": "",
+                  "valueType": "dynamic"
+                }
+              },
+              "cancellation": {
+                "cancellable": true,
+                "confirmCancel": true,
+                "confirmCancelMessage": {
+                  "staticValue": "",
+                  "dynamicValue": "",
+                  "valueType": "static"
+                }
+              },
+              "handleFailure": false,
+              "historyLookback": 0,
+              "skipIfAlreadyFilled": false,
+              "transitions": [
+                {
+                  "id": "trs-7d0e55e009",
+                  "type": "transition",
+                  "label": "Qui sommes-nous ?",
+                  "condition": {
+                    "type": "expression",
+                    "payload": "__CHOICE=Qui sommes-nous ?"
+                  },
+                  "destination": {
+                    "node": "nd-195c7ef115"
+                  }
+                },
+                {
+                  "id": "trs-b6dbf0a514",
+                  "type": "transition",
+                  "label": "Comment nous contacter ?",
+                  "condition": {
+                    "type": "expression",
+                    "payload": "__CHOICE=Comment nous contacter ?"
+                  },
+                  "destination": {
+                    "node": "nd-94cb5b821e"
+                  }
+                },
+                {
+                  "id": "trs-2859e40df0",
+                  "type": "transition",
+                  "label": "Quelle est notre mission ?",
+                  "condition": {
+                    "type": "expression",
+                    "payload": "__CHOICE=Quelle est notre mission ?"
+                  },
+                  "destination": {
+                    "node": "nd-b3e31562b7"
+                  }
+                },
+                {
+                  "id": "trs-cb56051ca7",
+                  "type": "transition",
+                  "label": "Où se trouve le siège de Cinaf ?",
+                  "condition": {
+                    "type": "expression",
+                    "payload": "__CHOICE=Où se trouve le siège de Cinaf ?"
+                  },
+                  "destination": {
+                    "node": "nd-4deb1e1b1a"
+                  }
+                }
+              ],
+              "prompt": {
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "You are ExtractGPT and your only goal is to generate useful content in JSON format for developers to parse and use. You don't know any other language than JSON."
+                  },
+                  {
+                    "role": "user",
+                    "content": "```typescript\n/** The user answer to the question \"Which one would you like? Choices: [ 1) Red Apple, 2) Yellow Apple, 3) Dark Banana ]\" */\ninterface Output = { choice: {{CHOICES_TYPINGS}} }\n```\n\nHere is a conversation between me and a user. Transcript:\n\"\"\"\n(...)\nagent: Which one would you like? Choices: [ 1) Red Apple, 2) Yellow Apple, 3) Dark Banana ]\nuser: I will go with the second one please\n\"\"\""
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "{\"choice\":\"Yellow Apple\"}"
+                  },
+                  {
+                    "role": "user",
+                    "content": "\nNow, forget about the previous transcripts. These were just examples, don't consider those as valid transcripts for this new task.\n\n###\n\nThe current Date is {{CURRENT_DATE_TIME}}.\n\nAt this point of the conversation, I need require the user to fill the output in following JSON output to complete the task.\nIf more than one property, try to extract each of them the best you can.\n\n```typescript\n/** The user answer to the question \"{{QUESTION}}\" */\ninterface Output = { choice: {{CHOICES_TYPINGS}} }\n```\n\nHere is a conversation between me and a user. Transcript:\n\"\"\"\n(...)\n{{TRANSCRIPT}}\n\"\"\"\n\nIn the last user message, here are the entities found:\n\"\"\"\nENTITIES_IDENTIFIED\n\"\"\"\n\nI need you to extract from the conversation transcript above the values the user has provided.\nIf the user has not provided the information I need, I need you to set the value of the missing answer properties to null.\nHave some tolerance to typos and variations in how the user selects from the possible values.\n\n\n\nNow, please reply to me with the above JSON output and nothing but JSON.\nYou should not explain your answer and should not talk back to me. Just JSON."
+                  }
+                ],
+                "model": "gpt-3.5-turbo",
+                "temperature": 0
+              }
+            }
+          ],
+          "defaultTransition": {
+            "targetNodeId": null
+          },
+          "id": "nd-10bed14265",
+          "name": "FAQ_Générales"
+        },
+        {
+          "type": "standard",
+          "deletable": true,
+          "x": 510,
+          "y": -525,
+          "instructions": [
+            {
+              "id": "ins-0ed2e3c638",
+              "category": "Capture Information",
+              "type": "capture",
+              "entityId": "prompts://SingleChoice/v1",
+              "entityName": "Single Choice",
+              "kbPriority": {
+                "enabled": true,
+                "searchScope": "all",
+                "kbs": []
+              },
+              "nodeId": "nd-3c07f4464a",
+              "question": {
+                "staticValue": "",
+                "dynamicValue": "Quel problème rencontrez-vous ?",
+                "valueType": "dynamic"
+              },
+              "validation": {
+                "validators": []
+              },
+              "choice": {
+                "options": {
+                  "valueType": "static",
+                  "staticValue": [
+                    {
+                      "label": {
+                        "valueType": "dynamic",
+                        "dynamicValue": "Problèmes de visionnage malgré l'abonnement"
+                      },
+                      "value": "Problèmes de visionnage malgré l'abonnement",
+                      "enabled": true
+                    },
+                    {
+                      "label": {
+                        "valueType": "dynamic",
+                        "dynamicValue": "Problème de connexion au compte"
+                      },
+                      "value": "Problème de connexion au compte",
+                      "enabled": true
+                    },
+                    {
+                      "label": {
+                        "valueType": "dynamic",
+                        "dynamicValue": ""
+                      },
+                      "value": "",
+                      "enabled": true
+                    }
+                  ],
+                  "dynamicValue": ""
+                }
+              },
+              "retry": {
+                "maxRetries": 2,
+                "retryMessage": {
+                  "staticValue": "",
+                  "dynamicValue": "",
+                  "valueType": "dynamic"
+                }
+              },
+              "cancellation": {
+                "cancellable": true,
+                "confirmCancel": true,
+                "confirmCancelMessage": {
+                  "staticValue": "",
+                  "dynamicValue": "",
+                  "valueType": "static"
+                }
+              },
+              "handleFailure": false,
+              "historyLookback": 0,
+              "skipIfAlreadyFilled": false,
+              "transitions": [
+                {
+                  "id": "trs-e7ff72d8c7",
+                  "type": "transition",
+                  "label": "Problèmes de visionnage malgré l'abonnement",
+                  "condition": {
+                    "type": "expression",
+                    "payload": "__CHOICE=Problèmes de visionnage malgré l'abonnement"
+                  },
+                  "destination": {
+                    "node": "nd-244eb75b46"
+                  }
+                },
+                {
+                  "id": "trs-e6bdb58c04",
+                  "type": "transition",
+                  "label": "Problème de connexion au compte",
+                  "condition": {
+                    "type": "expression",
+                    "payload": "__CHOICE=Problème de connexion au compte"
+                  },
+                  "destination": {
+                    "node": "nd-02d702bae2"
+                  }
+                }
+              ],
+              "prompt": {
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "You are ExtractGPT and your only goal is to generate useful content in JSON format for developers to parse and use. You don't know any other language than JSON."
+                  },
+                  {
+                    "role": "user",
+                    "content": "```typescript\n/** The user answer to the question \"Which one would you like? Choices: [ 1) Red Apple, 2) Yellow Apple, 3) Dark Banana ]\" */\ninterface Output = { choice: {{CHOICES_TYPINGS}} }\n```\n\nHere is a conversation between me and a user. Transcript:\n\"\"\"\n(...)\nagent: Which one would you like? Choices: [ 1) Red Apple, 2) Yellow Apple, 3) Dark Banana ]\nuser: I will go with the second one please\n\"\"\""
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "{\"choice\":\"Yellow Apple\"}"
+                  },
+                  {
+                    "role": "user",
+                    "content": "\nNow, forget about the previous transcripts. These were just examples, don't consider those as valid transcripts for this new task.\n\n###\n\nThe current Date is {{CURRENT_DATE_TIME}}.\n\nAt this point of the conversation, I need require the user to fill the output in following JSON output to complete the task.\nIf more than one property, try to extract each of them the best you can.\n\n```typescript\n/** The user answer to the question \"{{QUESTION}}\" */\ninterface Output = { choice: {{CHOICES_TYPINGS}} }\n```\n\nHere is a conversation between me and a user. Transcript:\n\"\"\"\n(...)\n{{TRANSCRIPT}}\n\"\"\"\n\nIn the last user message, here are the entities found:\n\"\"\"\nENTITIES_IDENTIFIED\n\"\"\"\n\nI need you to extract from the conversation transcript above the values the user has provided.\nIf the user has not provided the information I need, I need you to set the value of the missing answer properties to null.\nHave some tolerance to typos and variations in how the user selects from the possible values.\n\n\n\nNow, please reply to me with the above JSON output and nothing but JSON.\nYou should not explain your answer and should not talk back to me. Just JSON."
+                  }
+                ],
+                "model": "gpt-3.5-turbo",
+                "temperature": 0
+              }
+            },
+            {
+              "id": "ins-097f0a533a",
+              "type": "transition",
+              "condition": {
+                "type": "expression",
+                "payload": "!turn.KnowledgeAgent.responded"
+              },
+              "label": "Don't Know",
+              "generative": {
+                "label": "Don't Know",
+                "suggestion": {
+                  "condition": "true"
+                },
+                "properties": {
+                  "condition": false
+                }
+              },
+              "category": "Flow Logic",
+              "nodeId": "nd-3c07f4464a",
+              "description": "",
+              "destination": {
+                "node": "nd-5e5adaf62a"
+              }
+            }
+          ],
+          "defaultTransition": {
+            "targetNodeId": null
+          },
+          "id": "nd-3c07f4464a",
+          "name": "Problèmes_techniques"
+        },
+        {
+          "type": "standard",
+          "deletable": true,
+          "x": 510,
+          "y": -285,
+          "instructions": [
+            {
+              "id": "ins-5cb9b2ce63",
+              "category": "Capture Information",
+              "type": "capture",
+              "entityId": "prompts://SingleChoice/v1",
+              "entityName": "Single Choice",
+              "kbPriority": {
+                "enabled": true,
+                "searchScope": "all",
+                "kbs": []
+              },
+              "nodeId": "nd-f6f8163027",
+              "question": {
+                "valueType": "dynamic",
+                "dynamicValue": "Quel problèmes rencontrez-vous ?",
+                "staticValue": ""
+              },
+              "validation": {
+                "validators": []
+              },
+              "choice": {
+                "options": {
+                  "valueType": "static",
+                  "staticValue": [
+                    {
+                      "label": {
+                        "valueType": "dynamic",
+                        "dynamicValue": "Problèmes de prélèvement automatique"
+                      },
+                      "value": "Problèmes de prélèvement automatique",
+                      "enabled": true
+                    }
+                  ],
+                  "dynamicValue": ""
+                }
+              },
+              "retry": {
+                "maxRetries": 2,
+                "retryMessage": {
+                  "staticValue": "",
+                  "dynamicValue": "",
+                  "valueType": "dynamic"
+                }
+              },
+              "cancellation": {
+                "cancellable": true,
+                "confirmCancel": true,
+                "confirmCancelMessage": {
+                  "staticValue": "",
+                  "dynamicValue": "",
+                  "valueType": "static"
+                }
+              },
+              "handleFailure": false,
+              "historyLookback": 0,
+              "skipIfAlreadyFilled": false,
+              "transitions": [
+                {
+                  "id": "trs-ca265439d5",
+                  "type": "transition",
+                  "label": "Problèmes de prélèvement automatique",
+                  "condition": {
+                    "type": "expression",
+                    "payload": "__CHOICE=Problèmes de prélèvement automatique"
+                  },
+                  "destination": {
+                    "node": "nd-e1db48d249"
+                  }
+                }
+              ],
+              "prompt": {
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "You are ExtractGPT and your only goal is to generate useful content in JSON format for developers to parse and use. You don't know any other language than JSON."
+                  },
+                  {
+                    "role": "user",
+                    "content": "```typescript\n/** The user answer to the question \"Which one would you like? Choices: [ 1) Red Apple, 2) Yellow Apple, 3) Dark Banana ]\" */\ninterface Output = { choice: {{CHOICES_TYPINGS}} }\n```\n\nHere is a conversation between me and a user. Transcript:\n\"\"\"\n(...)\nagent: Which one would you like? Choices: [ 1) Red Apple, 2) Yellow Apple, 3) Dark Banana ]\nuser: I will go with the second one please\n\"\"\""
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "{\"choice\":\"Yellow Apple\"}"
+                  },
+                  {
+                    "role": "user",
+                    "content": "\nNow, forget about the previous transcripts. These were just examples, don't consider those as valid transcripts for this new task.\n\n###\n\nThe current Date is {{CURRENT_DATE_TIME}}.\n\nAt this point of the conversation, I need require the user to fill the output in following JSON output to complete the task.\nIf more than one property, try to extract each of them the best you can.\n\n```typescript\n/** The user answer to the question \"{{QUESTION}}\" */\ninterface Output = { choice: {{CHOICES_TYPINGS}} }\n```\n\nHere is a conversation between me and a user. Transcript:\n\"\"\"\n(...)\n{{TRANSCRIPT}}\n\"\"\"\n\nIn the last user message, here are the entities found:\n\"\"\"\nENTITIES_IDENTIFIED\n\"\"\"\n\nI need you to extract from the conversation transcript above the values the user has provided.\nIf the user has not provided the information I need, I need you to set the value of the missing answer properties to null.\nHave some tolerance to typos and variations in how the user selects from the possible values.\n\n\n\nNow, please reply to me with the above JSON output and nothing but JSON.\nYou should not explain your answer and should not talk back to me. Just JSON."
+                  }
+                ],
+                "model": "gpt-3.5-turbo",
+                "temperature": 0
+              }
+            },
+            {
+              "id": "ins-251be55f89",
+              "type": "transition",
+              "condition": {
+                "type": "expression",
+                "payload": "!turn.KnowledgeAgent.responded"
+              },
+              "label": "Don't Know",
+              "generative": {
+                "label": "Don't Know",
+                "suggestion": {
+                  "condition": "true"
+                },
+                "properties": {
+                  "condition": false
+                }
+              },
+              "category": "Flow Logic",
+              "nodeId": "nd-f6f8163027",
+              "description": "",
+              "destination": {
+                "node": "nd-5e5adaf62a"
+              }
+            }
+          ],
+          "defaultTransition": {
+            "targetNodeId": "nd-f6f8163027"
+          },
+          "id": "nd-f6f8163027",
+          "name": "Questions_sur_labonnement"
+        },
+        {
+          "type": "standard",
+          "deletable": true,
+          "x": 870,
+          "y": -1335,
+          "instructions": [
+            {
+              "id": "ins-b46d453b36",
+              "category": "Send Messages",
+              "type": "content",
+              "content": {
+                "type": "text",
+                "text": {
+                  "valueType": "dynamic",
+                  "dynamicValue": "Une plateforme de streaming dont le but est de rendre accessible le meilleur du cinéma africain.",
+                  "staticValue": ""
+                },
+                "typing": {
+                  "valueType": "static",
+                  "staticValue": true
+                }
+              },
+              "nodeId": "nd-195c7ef115",
+              "transitions": []
+            }
+          ],
+          "defaultTransition": {
+            "targetNodeId": "nd-1d8b1908bc"
+          },
+          "id": "nd-195c7ef115",
+          "name": "Présentation"
+        },
+        {
+          "type": "standard",
+          "deletable": true,
+          "x": 870,
+          "y": -1125,
+          "instructions": [
+            {
+              "id": "ins-43024e91f8",
+              "category": "Send Messages",
+              "type": "content",
+              "content": {
+                "type": "text",
+                "text": {
+                  "valueType": "dynamic",
+                  "dynamicValue": "En cliquant ici et un des fondateurs prendra rendez-vous avec vous pour un échange",
+                  "staticValue": ""
+                },
+                "typing": {
+                  "valueType": "static",
+                  "staticValue": true
+                }
+              },
+              "nodeId": "nd-94cb5b821e",
+              "transitions": []
+            }
+          ],
+          "defaultTransition": {
+            "targetNodeId": "nd-1d8b1908bc"
+          },
+          "id": "nd-94cb5b821e",
+          "name": "Nous_contacter"
+        },
+        {
+          "type": "standard",
+          "deletable": true,
+          "x": 870,
+          "y": -930,
+          "instructions": [
+            {
+              "id": "ins-bfda74305a",
+              "category": "Send Messages",
+              "type": "content",
+              "content": {
+                "type": "text",
+                "text": {
+                  "valueType": "dynamic",
+                  "dynamicValue": "De permettre aux producteurs de mieux rentabiliser leurs œuvres en les rendant accessibles à tous les amoureux de cinéma africain dans le monde.",
+                  "staticValue": ""
+                },
+                "typing": {
+                  "valueType": "static",
+                  "staticValue": true
+                }
+              },
+              "nodeId": "nd-b3e31562b7",
+              "transitions": []
+            }
+          ],
+          "defaultTransition": {
+            "targetNodeId": "nd-1d8b1908bc"
+          },
+          "id": "nd-b3e31562b7",
+          "name": "mission"
+        },
+        {
+          "type": "standard",
+          "deletable": true,
+          "x": 870,
+          "y": -720,
+          "instructions": [
+            {
+              "id": "ins-8e3f03e0fc",
+              "category": "Send Messages",
+              "type": "content",
+              "content": {
+                "type": "text",
+                "text": {
+                  "valueType": "dynamic",
+                  "dynamicValue": "Le siège social de l'entreprise CINAF est en Belgique à l'adresse Rue des Guillemins 139, 4000 Liège. Et nous possédons une base au Cameroun",
+                  "staticValue": ""
+                },
+                "typing": {
+                  "valueType": "static",
+                  "staticValue": true
+                }
+              },
+              "nodeId": "nd-4deb1e1b1a",
+              "transitions": []
+            }
+          ],
+          "defaultTransition": {
+            "targetNodeId": "nd-1d8b1908bc"
+          },
+          "id": "nd-4deb1e1b1a",
+          "name": "Standard2"
+        },
+        {
+          "type": "standard",
+          "deletable": true,
+          "x": -360,
+          "y": -450,
+          "instructions": [
+            {
+              "id": "ins-bbf34bbc0c",
+              "category": "Send Messages",
+              "type": "content",
+              "content": {
+                "type": "text",
+                "text": {
+                  "valueType": "dynamic",
+                  "dynamicValue": "Bonjour et bienvenue sur le service client de Cinaf !",
+                  "staticValue": ""
+                },
+                "typing": {
+                  "valueType": "static",
+                  "staticValue": true
+                }
+              },
+              "nodeId": "nd-d6dca742cb",
+              "transitions": []
+            }
+          ],
+          "defaultTransition": {
+            "targetNodeId": "nd-8bf8939b68"
+          },
+          "id": "nd-d6dca742cb",
+          "name": "Salutations"
+        },
+        {
+          "type": "trigger",
+          "deletable": true,
+          "x": -825,
+          "y": -285,
+          "integrationId": "webchat",
+          "triggerId": "conversationStarted",
+          "instructions": [
+            {
+              "id": "trs-7e80ab00a9",
+              "type": "transition",
+              "label": "",
+              "condition": {
+                "type": "expression",
+                "payload": "true"
+              },
+              "destination": {
+                "node": "nd-d6dca742cb"
+              },
+              "generative": {
+                "label": "",
+                "properties": {
+                  "label": true,
+                  "condition": true
+                },
+                "suggestion": {
+                  "label": "",
+                  "condition": "true"
+                }
+              },
+              "nodeId": "nd-60f7939a4a",
+              "transitions": []
+            }
+          ],
+          "id": "nd-60f7939a4a",
+          "name": "Trigger1",
+          "examples": []
+        },
+        {
+          "type": "standard",
+          "deletable": true,
+          "x": 1215,
+          "y": -615,
+          "instructions": [
+            {
+              "id": "ins-2d4d8b0ed0",
+              "category": "Send Messages",
+              "type": "content",
+              "content": {
+                "type": "text",
+                "text": {
+                  "valueType": "dynamic",
+                  "dynamicValue": "Nous sommes désolé pour le problème de lecture. Cela peut être dû à plusieurs facteurs. Pour remédier à cela, suivez les étapes suivantes :\n",
+                  "staticValue": ""
+                },
+                "typing": {
+                  "valueType": "static",
+                  "staticValue": true
+                }
+              },
+              "nodeId": "nd-244eb75b46",
+              "transitions": []
+            },
+            {
+              "id": "ins-498fbf5cbf",
+              "category": "Send Messages",
+              "type": "content",
+              "content": {
+                "type": "text",
+                "text": {
+                  "valueType": "dynamic",
+                  "dynamicValue": "- Veuillez vider les caches;\n- Actualisé l'application\n- Mettre en arrière plan, puis remettre à nouveau en avant plan\nSi vous êtes sur l'application mobile; \n- Désinstaller puis réinstaller l'application\nSi le problème persiste, contacter le service client : +237676195352",
+                  "staticValue": ""
+                },
+                "typing": {
+                  "valueType": "static",
+                  "staticValue": true
+                }
+              },
+              "nodeId": "nd-244eb75b46",
+              "transitions": []
+            },
+            {
+              "id": "ins-f69d60c98f",
+              "category": "Capture Information",
+              "type": "capture",
+              "entityId": "prompts://SingleChoice/v1",
+              "entityName": "Single Choice",
+              "kbPriority": {
+                "enabled": true,
+                "searchScope": "all",
+                "kbs": []
+              },
+              "nodeId": "nd-244eb75b46",
+              "question": {
+                "valueType": "dynamic",
+                "dynamicValue": "",
+                "staticValue": ""
+              },
+              "validation": {
+                "validators": []
+              },
+              "choice": {
+                "options": {
+                  "valueType": "static",
+                  "staticValue": [
+                    {
+                      "label": {
+                        "valueType": "dynamic",
+                        "dynamicValue": "Retour"
+                      },
+                      "value": "Retour",
+                      "enabled": true
+                    },
+                    {
+                      "label": {
+                        "valueType": "dynamic",
+                        "dynamicValue": "Menu principal"
+                      },
+                      "value": "Menu principal",
+                      "enabled": true
+                    },
+                    {
+                      "label": {
+                        "valueType": "dynamic",
+                        "dynamicValue": "Chat"
+                      },
+                      "value": "Chat",
+                      "enabled": true
+                    }
+                  ],
+                  "dynamicValue": ""
+                }
+              },
+              "retry": {
+                "maxRetries": 2,
+                "retryMessage": {
+                  "staticValue": "",
+                  "dynamicValue": "",
+                  "valueType": "dynamic"
+                }
+              },
+              "cancellation": {
+                "cancellable": true,
+                "confirmCancel": true,
+                "confirmCancelMessage": {
+                  "staticValue": "",
+                  "dynamicValue": "",
+                  "valueType": "static"
+                }
+              },
+              "handleFailure": false,
+              "historyLookback": 0,
+              "skipIfAlreadyFilled": false,
+              "transitions": [
+                {
+                  "id": "trs-0cd596db58",
+                  "type": "transition",
+                  "label": "Retour",
+                  "condition": {
+                    "type": "expression",
+                    "payload": "__CHOICE=Retour"
+                  },
+                  "destination": {
+                    "node": "nd-3c07f4464a"
+                  }
+                },
+                {
+                  "id": "trs-20e23f422f",
+                  "type": "transition",
+                  "label": "Menu principal",
+                  "condition": {
+                    "type": "expression",
+                    "payload": "__CHOICE=Menu principal"
+                  },
+                  "destination": {
+                    "node": "nd-8bf8939b68"
+                  }
+                },
+                {
+                  "id": "trs-b9718af05d",
+                  "type": "transition",
+                  "label": "Chat",
+                  "condition": {
+                    "type": "expression",
+                    "payload": "__CHOICE=Chat"
+                  },
+                  "destination": {
+                    "node": "nd-58287506bc"
+                  }
+                }
+              ],
+              "prompt": {
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "You are ExtractGPT and your only goal is to generate useful content in JSON format for developers to parse and use. You don't know any other language than JSON."
+                  },
+                  {
+                    "role": "user",
+                    "content": "```typescript\n/** The user answer to the question \"Which one would you like? Choices: [ 1) Red Apple, 2) Yellow Apple, 3) Dark Banana ]\" */\ninterface Output = { choice: {{CHOICES_TYPINGS}} }\n```\n\nHere is a conversation between me and a user. Transcript:\n\"\"\"\n(...)\nagent: Which one would you like? Choices: [ 1) Red Apple, 2) Yellow Apple, 3) Dark Banana ]\nuser: I will go with the second one please\n\"\"\""
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "{\"choice\":\"Yellow Apple\"}"
+                  },
+                  {
+                    "role": "user",
+                    "content": "\nNow, forget about the previous transcripts. These were just examples, don't consider those as valid transcripts for this new task.\n\n###\n\nThe current Date is {{CURRENT_DATE_TIME}}.\n\nAt this point of the conversation, I need require the user to fill the output in following JSON output to complete the task.\nIf more than one property, try to extract each of them the best you can.\n\n```typescript\n/** The user answer to the question \"{{QUESTION}}\" */\ninterface Output = { choice: {{CHOICES_TYPINGS}} }\n```\n\nHere is a conversation between me and a user. Transcript:\n\"\"\"\n(...)\n{{TRANSCRIPT}}\n\"\"\"\n\nIn the last user message, here are the entities found:\n\"\"\"\nENTITIES_IDENTIFIED\n\"\"\"\n\nI need you to extract from the conversation transcript above the values the user has provided.\nIf the user has not provided the information I need, I need you to set the value of the missing answer properties to null.\nHave some tolerance to typos and variations in how the user selects from the possible values.\n\n\n\nNow, please reply to me with the above JSON output and nothing but JSON.\nYou should not explain your answer and should not talk back to me. Just JSON."
+                  }
+                ],
+                "model": "gpt-3.5-turbo",
+                "temperature": 0
+              }
+            }
+          ],
+          "defaultTransition": {
+            "targetNodeId": null
+          },
+          "id": "nd-244eb75b46",
+          "name": "Visionnage"
+        },
+        {
+          "type": "standard",
+          "deletable": true,
+          "x": 975,
+          "y": -315,
+          "instructions": [
+            {
+              "id": "ins-56c5dfb33e",
+              "category": "Send Messages",
+              "type": "content",
+              "content": {
+                "type": "text",
+                "text": {
+                  "valueType": "dynamic",
+                  "dynamicValue": "Nous sommes désolé pour le problème de connexion que vous rencontrez. Cela peut être dû au compte gmail avec lequel vous vous êtes enregistrer sur notre Plate-forme.",
+                  "staticValue": ""
+                },
+                "typing": {
+                  "valueType": "static",
+                  "staticValue": true
+                }
+              },
+              "nodeId": "nd-02d702bae2",
+              "transitions": []
+            },
+            {
+              "id": "ins-0c39b19003",
+              "category": "Send Messages",
+              "type": "content",
+              "content": {
+                "type": "text",
+                "text": {
+                  "valueType": "dynamic",
+                  "dynamicValue": "Vérifier que le compte Gmail lier à votre compte Cinaf et  celui au quel vous êtes connecter, sont identiques.",
+                  "staticValue": ""
+                },
+                "typing": {
+                  "valueType": "static",
+                  "staticValue": true
+                }
+              },
+              "nodeId": "nd-02d702bae2",
+              "transitions": []
+            },
+            {
+              "id": "ins-d4d4d3db5c",
+              "category": "Send Messages",
+              "type": "content",
+              "content": {
+                "type": "text",
+                "text": {
+                  "valueType": "dynamic",
+                  "dynamicValue": "Si malgré cela, vous ne parvenez pas à vous connecter, veuillez joindre le service client Cinaf au contact ci-après : +237676195352",
+                  "staticValue": ""
+                },
+                "typing": {
+                  "valueType": "static",
+                  "staticValue": true
+                }
+              },
+              "nodeId": "nd-02d702bae2",
+              "transitions": []
+            },
+            {
+              "id": "ins-c2e2036030",
+              "category": "Capture Information",
+              "type": "capture",
+              "entityId": "prompts://SingleChoice/v1",
+              "entityName": "Single Choice",
+              "kbPriority": {
+                "enabled": true,
+                "searchScope": "all",
+                "kbs": []
+              },
+              "nodeId": "nd-02d702bae2",
+              "question": {
+                "staticValue": "",
+                "dynamicValue": "Avez-vous d'autres questions ?",
+                "valueType": "dynamic"
+              },
+              "validation": {
+                "validators": []
+              },
+              "choice": {
+                "options": {
+                  "valueType": "static",
+                  "staticValue": [
+                    {
+                      "label": {
+                        "valueType": "dynamic",
+                        "dynamicValue": "Oui, retourner au menu principal"
+                      },
+                      "value": "Oui, retourner au menu principal",
+                      "enabled": true
+                    },
+                    {
+                      "label": {
+                        "valueType": "dynamic",
+                        "dynamicValue": "Non, terminer la conversation"
+                      },
+                      "value": "Non, terminer la conversation",
+                      "enabled": true
+                    },
+                    {
+                      "label": {
+                        "valueType": "dynamic",
+                        "dynamicValue": "poser directement au chat"
+                      },
+                      "value": "poser directement au chat",
+                      "enabled": true
+                    }
+                  ],
+                  "dynamicValue": ""
+                }
+              },
+              "retry": {
+                "maxRetries": 2,
+                "retryMessage": {
+                  "staticValue": "",
+                  "dynamicValue": "",
+                  "valueType": "dynamic"
+                }
+              },
+              "cancellation": {
+                "cancellable": true,
+                "confirmCancel": true,
+                "confirmCancelMessage": {
+                  "staticValue": "",
+                  "dynamicValue": "",
+                  "valueType": "static"
+                }
+              },
+              "handleFailure": false,
+              "historyLookback": 0,
+              "skipIfAlreadyFilled": false,
+              "transitions": [
+                {
+                  "id": "trs-c0b1ba2b6b",
+                  "type": "transition",
+                  "label": "Oui, retourner au menu principal",
+                  "condition": {
+                    "type": "expression",
+                    "payload": "__CHOICE=Oui, retourner au menu principal"
+                  },
+                  "destination": {
+                    "node": "nd-8bf8939b68"
+                  }
+                },
+                {
+                  "id": "trs-1ca230d070",
+                  "type": "transition",
+                  "label": "Non, terminer la conversation",
+                  "condition": {
+                    "type": "expression",
+                    "payload": "__CHOICE=Non, terminer la conversation"
+                  },
+                  "destination": {
+                    "node": "nd-a6cb9fbad4"
+                  }
+                },
+                {
+                  "id": "trs-1b5119f09c",
+                  "type": "transition",
+                  "label": "poser directement au chat",
+                  "condition": {
+                    "type": "expression",
+                    "payload": "__CHOICE=poser directement au chat"
+                  },
+                  "destination": {
+                    "node": "nd-58287506bc"
+                  }
+                }
+              ],
+              "prompt": {
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "You are ExtractGPT and your only goal is to generate useful content in JSON format for developers to parse and use. You don't know any other language than JSON."
+                  },
+                  {
+                    "role": "user",
+                    "content": "```typescript\n/** The user answer to the question \"Which one would you like? Choices: [ 1) Red Apple, 2) Yellow Apple, 3) Dark Banana ]\" */\ninterface Output = { choice: {{CHOICES_TYPINGS}} }\n```\n\nHere is a conversation between me and a user. Transcript:\n\"\"\"\n(...)\nagent: Which one would you like? Choices: [ 1) Red Apple, 2) Yellow Apple, 3) Dark Banana ]\nuser: I will go with the second one please\n\"\"\""
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "{\"choice\":\"Yellow Apple\"}"
+                  },
+                  {
+                    "role": "user",
+                    "content": "\nNow, forget about the previous transcripts. These were just examples, don't consider those as valid transcripts for this new task.\n\n###\n\nThe current Date is {{CURRENT_DATE_TIME}}.\n\nAt this point of the conversation, I need require the user to fill the output in following JSON output to complete the task.\nIf more than one property, try to extract each of them the best you can.\n\n```typescript\n/** The user answer to the question \"{{QUESTION}}\" */\ninterface Output = { choice: {{CHOICES_TYPINGS}} }\n```\n\nHere is a conversation between me and a user. Transcript:\n\"\"\"\n(...)\n{{TRANSCRIPT}}\n\"\"\"\n\nIn the last user message, here are the entities found:\n\"\"\"\nENTITIES_IDENTIFIED\n\"\"\"\n\nI need you to extract from the conversation transcript above the values the user has provided.\nIf the user has not provided the information I need, I need you to set the value of the missing answer properties to null.\nHave some tolerance to typos and variations in how the user selects from the possible values.\n\n\n\nNow, please reply to me with the above JSON output and nothing but JSON.\nYou should not explain your answer and should not talk back to me. Just JSON."
+                  }
+                ],
+                "model": "gpt-3.5-turbo",
+                "temperature": 0
+              }
+            }
+          ],
+          "defaultTransition": {
+            "targetNodeId": null
+          },
+          "id": "nd-02d702bae2",
+          "name": "Connexion"
+        },
+        {
+          "type": "standard",
+          "deletable": true,
+          "x": 765,
+          "y": 165,
+          "instructions": [
+            {
+              "id": "ins-9a661e0be4",
+              "category": "Send Messages",
+              "type": "content",
+              "content": {
+                "type": "text",
+                "text": {
+                  "valueType": "dynamic",
+                  "dynamicValue": "Veuillez fournir une preuve de paiement svp",
+                  "staticValue": ""
+                },
+                "typing": {
+                  "valueType": "static",
+                  "staticValue": true
+                }
+              },
+              "nodeId": "nd-e1db48d249",
+              "transitions": []
+            },
+            {
+              "id": "ins-c0477aa375",
+              "type": "skill",
+              "name": "numéro client",
+              "flowId": "wf-63a5a00b61",
+              "exitNodes": [
+                "nd-94e560c5dc"
+              ],
+              "transitions": [
+                {
+                  "id": "trs-78540949aa",
+                  "type": "transition",
+                  "label": "Exit",
+                  "condition": {
+                    "type": "expression",
+                    "payload": "lastNode=nd-94e560c5dc"
+                  },
+                  "destination": {},
+                  "generative": {
+                    "label": "Exit",
+                    "properties": {
+                      "label": true,
+                      "condition": true
+                    },
+                    "suggestion": {
+                      "label": "Exit",
+                      "condition": "lastNode=nd-94e560c5dc"
+                    }
+                  }
+                }
+              ],
+              "hubId": "hsk-0bfd1f2828",
+              "hubType": "workflow:capture",
+              "nodeId": "nd-e1db48d249",
+              "manualFields": []
+            },
+            {
+              "id": "ins-60bc3360a8",
+              "category": "Capture Information",
+              "type": "capture",
+              "entityId": "prompts://SingleChoice/v1",
+              "entityName": "Single Choice",
+              "kbPriority": {
+                "enabled": true,
+                "searchScope": "all",
+                "kbs": []
+              },
+              "nodeId": "nd-e1db48d249",
+              "question": {
+                "valueType": "dynamic",
+                "dynamicValue": "Avez-vous d'autres questions ?",
+                "staticValue": ""
+              },
+              "validation": {
+                "validators": []
+              },
+              "choice": {
+                "options": {
+                  "valueType": "static",
+                  "staticValue": [
+                    {
+                      "label": {
+                        "valueType": "dynamic",
+                        "dynamicValue": "Oui, retourner au menu principal"
+                      },
+                      "value": "Oui, retourner au menu principal",
+                      "enabled": true
+                    },
+                    {
+                      "label": {
+                        "valueType": "dynamic",
+                        "dynamicValue": "Non, terminer la conversation"
+                      },
+                      "value": "Non, terminer la conversation",
+                      "enabled": true
+                    }
+                  ],
+                  "dynamicValue": ""
+                }
+              },
+              "retry": {
+                "maxRetries": 2,
+                "retryMessage": {
+                  "staticValue": "",
+                  "dynamicValue": "",
+                  "valueType": "dynamic"
+                }
+              },
+              "cancellation": {
+                "cancellable": true,
+                "confirmCancel": true,
+                "confirmCancelMessage": {
+                  "staticValue": "",
+                  "dynamicValue": "",
+                  "valueType": "static"
+                }
+              },
+              "handleFailure": false,
+              "historyLookback": 0,
+              "skipIfAlreadyFilled": false,
+              "transitions": [
+                {
+                  "id": "trs-64fc1c2f5d",
+                  "type": "transition",
+                  "label": "Oui, retourner au menu principal",
+                  "condition": {
+                    "type": "expression",
+                    "payload": "__CHOICE=Oui, retourner au menu principal"
+                  },
+                  "destination": {
+                    "node": "nd-8bf8939b68"
+                  }
+                },
+                {
+                  "id": "trs-b06a8ad5f4",
+                  "type": "transition",
+                  "label": "Non, terminer la conversation",
+                  "condition": {
+                    "type": "expression",
+                    "payload": "__CHOICE=Non, terminer la conversation"
+                  },
+                  "destination": {
+                    "node": "nd-a6cb9fbad4"
+                  }
+                }
+              ],
+              "prompt": {
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "You are ExtractGPT and your only goal is to generate useful content in JSON format for developers to parse and use. You don't know any other language than JSON."
+                  },
+                  {
+                    "role": "user",
+                    "content": "```typescript\n/** The user answer to the question \"Which one would you like? Choices: [ 1) Red Apple, 2) Yellow Apple, 3) Dark Banana ]\" */\ninterface Output = { choice: {{CHOICES_TYPINGS}} }\n```\n\nHere is a conversation between me and a user. Transcript:\n\"\"\"\n(...)\nagent: Which one would you like? Choices: [ 1) Red Apple, 2) Yellow Apple, 3) Dark Banana ]\nuser: I will go with the second one please\n\"\"\""
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "{\"choice\":\"Yellow Apple\"}"
+                  },
+                  {
+                    "role": "user",
+                    "content": "\nNow, forget about the previous transcripts. These were just examples, don't consider those as valid transcripts for this new task.\n\n###\n\nThe current Date is {{CURRENT_DATE_TIME}}.\n\nAt this point of the conversation, I need require the user to fill the output in following JSON output to complete the task.\nIf more than one property, try to extract each of them the best you can.\n\n```typescript\n/** The user answer to the question \"{{QUESTION}}\" */\ninterface Output = { choice: {{CHOICES_TYPINGS}} }\n```\n\nHere is a conversation between me and a user. Transcript:\n\"\"\"\n(...)\n{{TRANSCRIPT}}\n\"\"\"\n\nIn the last user message, here are the entities found:\n\"\"\"\nENTITIES_IDENTIFIED\n\"\"\"\n\nI need you to extract from the conversation transcript above the values the user has provided.\nIf the user has not provided the information I need, I need you to set the value of the missing answer properties to null.\nHave some tolerance to typos and variations in how the user selects from the possible values.\n\n\n\nNow, please reply to me with the above JSON output and nothing but JSON.\nYou should not explain your answer and should not talk back to me. Just JSON."
+                  }
+                ],
+                "model": "gpt-3.5-turbo",
+                "temperature": 0
+              }
+            }
+          ],
+          "defaultTransition": {
+            "targetNodeId": null
+          },
+          "id": "nd-e1db48d249",
+          "name": "Standard1"
+        },
+        {
+          "type": "standard",
+          "deletable": true,
+          "x": 1470,
+          "y": -1290,
+          "instructions": [
+            {
+              "id": "ins-c2b6137dd2",
+              "category": "Capture Information",
+              "type": "capture",
+              "entityId": "prompts://SingleChoice/v1",
+              "entityName": "Single Choice",
+              "kbPriority": {
+                "enabled": true,
+                "searchScope": "all",
+                "kbs": []
+              },
+              "nodeId": "nd-1d8b1908bc",
+              "question": {
+                "valueType": "dynamic",
+                "dynamicValue": "Avez-vous d'autres questions ?",
+                "staticValue": ""
+              },
+              "validation": {
+                "validators": []
+              },
+              "choice": {
+                "options": {
+                  "valueType": "static",
+                  "staticValue": [
+                    {
+                      "label": {
+                        "valueType": "dynamic",
+                        "dynamicValue": "Oui, retourner au menu principal"
+                      },
+                      "value": "Oui, retourner au menu principal",
+                      "enabled": true
+                    },
+                    {
+                      "label": {
+                        "valueType": "dynamic",
+                        "dynamicValue": "Non, terminer la conversation"
+                      },
+                      "value": "Non, terminer la conversation",
+                      "enabled": true
+                    }
+                  ],
+                  "dynamicValue": ""
+                }
+              },
+              "retry": {
+                "maxRetries": 2,
+                "retryMessage": {
+                  "staticValue": "",
+                  "dynamicValue": "",
+                  "valueType": "dynamic"
+                }
+              },
+              "cancellation": {
+                "cancellable": true,
+                "confirmCancel": true,
+                "confirmCancelMessage": {
+                  "staticValue": "",
+                  "dynamicValue": "",
+                  "valueType": "static"
+                }
+              },
+              "handleFailure": false,
+              "historyLookback": 0,
+              "skipIfAlreadyFilled": false,
+              "transitions": [
+                {
+                  "id": "trs-3a528f5405",
+                  "type": "transition",
+                  "label": "Oui, retourner au menu principal",
+                  "condition": {
+                    "type": "expression",
+                    "payload": "__CHOICE=Oui, retourner au menu principal"
+                  },
+                  "destination": {
+                    "node": "nd-8bf8939b68"
+                  }
+                },
+                {
+                  "id": "trs-329215d91e",
+                  "type": "transition",
+                  "label": "Non, terminer la conversation",
+                  "condition": {
+                    "type": "expression",
+                    "payload": "__CHOICE=Non, terminer la conversation"
+                  },
+                  "destination": {
+                    "node": "nd-a6cb9fbad4"
+                  }
+                }
+              ],
+              "prompt": {
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "You are ExtractGPT and your only goal is to generate useful content in JSON format for developers to parse and use. You don't know any other language than JSON."
+                  },
+                  {
+                    "role": "user",
+                    "content": "```typescript\n/** The user answer to the question \"Which one would you like? Choices: [ 1) Red Apple, 2) Yellow Apple, 3) Dark Banana ]\" */\ninterface Output = { choice: {{CHOICES_TYPINGS}} }\n```\n\nHere is a conversation between me and a user. Transcript:\n\"\"\"\n(...)\nagent: Which one would you like? Choices: [ 1) Red Apple, 2) Yellow Apple, 3) Dark Banana ]\nuser: I will go with the second one please\n\"\"\""
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "{\"choice\":\"Yellow Apple\"}"
+                  },
+                  {
+                    "role": "user",
+                    "content": "\nNow, forget about the previous transcripts. These were just examples, don't consider those as valid transcripts for this new task.\n\n###\n\nThe current Date is {{CURRENT_DATE_TIME}}.\n\nAt this point of the conversation, I need require the user to fill the output in following JSON output to complete the task.\nIf more than one property, try to extract each of them the best you can.\n\n```typescript\n/** The user answer to the question \"{{QUESTION}}\" */\ninterface Output = { choice: {{CHOICES_TYPINGS}} }\n```\n\nHere is a conversation between me and a user. Transcript:\n\"\"\"\n(...)\n{{TRANSCRIPT}}\n\"\"\"\n\nIn the last user message, here are the entities found:\n\"\"\"\nENTITIES_IDENTIFIED\n\"\"\"\n\nI need you to extract from the conversation transcript above the values the user has provided.\nIf the user has not provided the information I need, I need you to set the value of the missing answer properties to null.\nHave some tolerance to typos and variations in how the user selects from the possible values.\n\n\n\nNow, please reply to me with the above JSON output and nothing but JSON.\nYou should not explain your answer and should not talk back to me. Just JSON."
+                  }
+                ],
+                "model": "gpt-3.5-turbo",
+                "temperature": 0
+              }
+            }
+          ],
+          "defaultTransition": {
+            "targetNodeId": null
+          },
+          "id": "nd-1d8b1908bc",
+          "name": "Fin_de_conversation"
+        },
+        {
+          "type": "standard",
+          "deletable": true,
+          "x": 1935,
+          "y": -1110,
+          "instructions": [
+            {
+              "id": "ins-e3285c2ece",
+              "category": "Send Messages",
+              "type": "content",
+              "content": {
+                "type": "text",
+                "text": {
+                  "valueType": "dynamic",
+                  "dynamicValue": "Merci d'avoir utilisé notre chatbot. À bientôt !",
+                  "staticValue": ""
+                },
+                "typing": {
+                  "valueType": "static",
+                  "staticValue": true
+                }
+              },
+              "nodeId": "nd-a6cb9fbad4",
+              "transitions": []
+            }
+          ],
+          "defaultTransition": {
+            "targetNodeId": "nd-80ac4ff158"
+          },
+          "id": "nd-a6cb9fbad4",
+          "name": "Aurevoir"
+        },
+        {
+          "type": "standard",
+          "deletable": true,
+          "x": 225,
+          "y": 975,
+          "instructions": [
+            {
+              "id": "ins-8ee6b76778",
+              "type": "capture",
+              "entityId": "prompts://RawInput/v1",
+              "entityName": "Raw Input",
+              "kbPriority": {
+                "enabled": true,
+                "searchScope": "all",
+                "kbs": []
+              },
+              "nodeId": "nd-352e824d21",
+              "variableId": "var-05c12f1170",
+              "question": {
+                "staticValue": "",
+                "dynamicValue": "Comment puis-je vous aider ?",
+                "valueType": "dynamic"
+              },
+              "validation": {
+                "validators": []
+              },
+              "choice": {
+                "options": {
+                  "staticValue": [],
+                  "dynamicValue": "",
+                  "valueType": "static"
+                }
+              },
+              "retry": {
+                "maxRetries": 2,
+                "retryMessage": {
+                  "staticValue": "",
+                  "dynamicValue": "",
+                  "valueType": "dynamic"
+                }
+              },
+              "cancellation": {
+                "cancellable": true,
+                "confirmCancel": true,
+                "confirmCancelMessage": {
+                  "staticValue": "",
+                  "dynamicValue": "",
+                  "valueType": "static"
+                }
+              },
+              "handleFailure": false,
+              "historyLookback": 0,
+              "skipIfAlreadyFilled": false,
+              "transitions": [],
+              "prompt": {
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "You are ExtractGPT and your only goal is to generate useful content in JSON format for developers to parse and use. You don't know any other language than JSON."
+                  },
+                  {
+                    "role": "user",
+                    "content": "```typescript\n/** The user answer to the question \"undefined\" */\ninterface Output = { value: any }\n```\n\nHere is a conversation between me and a user. Transcript:\n\"\"\"\n(...)\nagent: undefined\nuser: undefined\n\"\"\""
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "{}"
+                  },
+                  {
+                    "role": "user",
+                    "content": "\nNow, forget about the previous transcripts. These were just examples, don't consider those as valid transcripts for this new task.\n\n###\n\nThe current Date is {{CURRENT_DATE_TIME}}.\n\nAt this point of the conversation, I need require the user to fill the output in following JSON output to complete the task.\nIf more than one property, try to extract each of them the best you can.\n\n```typescript\n/** The user answer to the question \"{{QUESTION}}\" */\ninterface Output = { value: any }\n```\n\nHere is a conversation between me and a user. Transcript:\n\"\"\"\n(...)\n{{TRANSCRIPT}}\n\"\"\"\n\nIn the last user message, here are the entities found:\n\"\"\"\nENTITIES_IDENTIFIED\n\"\"\"\n\nI need you to extract from the conversation transcript above the values the user has provided.\nIf the user has not provided the information I need, I need you to set the value of the missing answer properties to null.\nHave some tolerance to typos and variations in how the user selects from the possible values.\n\n\n\nNow, please reply to me with the above JSON output and nothing but JSON.\nYou should not explain your answer and should not talk back to me. Just JSON."
+                  }
+                ],
+                "model": "gpt-3.5-turbo",
+                "temperature": 0
+              }
+            },
+            {
+              "id": "ins-63310b8d2a",
+              "type": "transition",
+              "condition": {
+                "type": "expression",
+                "payload": "{{!turn.KnowledgeAgent.responded}}"
+              },
+              "label": "DON'T KNOW",
+              "generative": {
+                "label": "DON'T KNOW",
+                "suggestion": {
+                  "condition": "true"
+                },
+                "properties": {
+                  "condition": false
+                }
+              },
+              "category": "Flow Logic",
+              "nodeId": "nd-352e824d21",
+              "description": "",
+              "destination": {
+                "node": "nd-5e5adaf62a"
+              },
+              "transitions": []
+            },
+            {
+              "id": "ins-3378b37774",
+              "type": "transition",
+              "condition": {
+                "type": "intent",
+                "payload": {
+                  "type": "library",
+                  "name": "",
+                  "intent": {
+                    "id": "int-6d183318b6",
+                    "name": "telecharger_cinaf_app",
+                    "utterances_with_slots": [
+                      "Comment puis-je télécharger l'application CINAF sur mon téléphone ?\r",
+                      "Existe-t-il une version de l'application CINAF pour les ordinateurs ?\r",
+                      "Quels sont les prérequis pour installer l'application CINAF sur un appareil Android ?\r",
+                      "L'application CINAF est-elle disponible sur l'App Store pour les utilisateurs d'iPhone ?\r",
+                      "Y a-t-il des frais associés au téléchargement de l'application CINAF ?\r",
+                      "Comment vérifier si mon téléphone est compatible avec l'application CINAF ?\r",
+                      "Quelles étapes dois-je suivre pour installer l'application CINAF sur un émulateur Android ?\r",
+                      "L'application CINAF nécessite-t-elle une connexion Internet pour être téléchargée ?\r",
+                      "Comment puis-je résoudre les problèmes de téléchargement de l'application CINAF ?\r",
+                      "Y a-t-il des mises à jour fréquentes pour l'application CINAF après son téléchargement ?\r",
+                      "Où puis-je trouver des avis ou des commentaires sur l'application CINAF avant de la télécharger ?"
+                    ]
+                  }
+                }
+              },
+              "category": "Flow Logic",
+              "nodeId": "nd-352e824d21",
+              "generative": null,
+              "label": "Intent is : telecharger_cinaf_app",
+              "description": "",
+              "destination": {
+                "node": "nd-9d45ab1b16"
+              },
+              "transitions": []
+            },
+            {
+              "id": "ins-0daf65f117",
+              "type": "transition",
+              "condition": {
+                "type": "intent",
+                "payload": {
+                  "type": "library",
+                  "name": "",
+                  "intent": {
+                    "id": "int-1e9df30c5f",
+                    "name": "Temps_douverture",
+                    "utterances_with_slots": [
+                      "Quelles sont vos heures d'ouvertures ?",
+                      "À quel moment puis-je vous visiter ?",
+                      "À quel moment puis-je visiter Cinaf ?",
+                      "Quand est-ce que Cinaf commence ses activités ?",
+                      "Cinaf ouvre à partir de quelle heure chaque jour ?",
+                      "De quelle heure à quelle heure Cinaf est-il ouvert ?",
+                      "Pouvez-vous me préciser l'heure d'ouverture de Cinaf ?",
+                      "À quelle heure commence le service de Cinaf ?",
+                      "Quand est-ce que Cinaf ouvre pour les visiteurs ?",
+                      "Quels sont les jours et heures où Cinaf est ouvert ?"
+                    ]
+                  }
+                }
+              },
+              "category": "Flow Logic",
+              "nodeId": "nd-352e824d21",
+              "generative": null,
+              "label": "Intent is : Temps_douverture",
+              "description": "",
+              "destination": {
+                "node": "nd-d8f9091e29"
+              },
+              "transitions": []
+            },
+            {
+              "id": "ins-51e3a3731c",
+              "type": "transition",
+              "condition": {
+                "type": "intent",
+                "payload": {
+                  "type": "library",
+                  "name": "",
+                  "intent": {
+                    "id": "int-1d90d13e54",
+                    "name": "abonnement_cinaf",
+                    "utterances_with_slots": [
+                      "Quelles sont les différentes options de paiement disponibles pour s'abonner à CINAF ?\r",
+                      "Est-il possible de payer son abonnement CINAF directement via l'application mobile ?\r",
+                      "CINAF propose-t-il des abonnements mensuels et annuels ? Quelles sont les différences de tarifs ?\r",
+                      "Comment puis-je mettre à jour mes informations de paiement pour mon abonnement CINAF ?\r",
+                      "Y a-t-il des frais supplémentaires à prévoir en plus du coût de l'abonnement CINAF ?\r",
+                      "Est-ce que CINAF offre une période d'essai gratuite avant de devoir payer un abonnement ?\r",
+                      "Quelles sont les étapes à suivre pour souscrire et payer un abonnement CINAF depuis le site web ?\r",
+                      "CINAF accepte-t-il les paiements par carte bancaire internationale ?\r",
+                      "Existe-t-il des options de paiement local (comme Mobile Money) pour s'abonner à CINAF ?\r",
+                      "Comment puis-je obtenir une facture pour mon abonnement CINAF une fois le paiement effectué ?\r",
+                      "En cas de problème lors du paiement de mon abonnement CINAF, qui dois-je contacter pour obtenir de l'aide ?"
+                    ]
+                  }
+                }
+              },
+              "category": "Flow Logic",
+              "nodeId": "nd-352e824d21",
+              "generative": null,
+              "label": "Intent is : abonnement_cinaf",
+              "description": "",
+              "destination": {
+                "node": "nd-e6d77d0bbe"
+              },
+              "transitions": []
+            },
+            {
+              "id": "ins-90a43c0196",
+              "type": "transition",
+              "condition": {
+                "type": "intent",
+                "payload": {
+                  "type": "library",
+                  "name": "",
+                  "intent": {
+                    "id": "int-b11e2765b4",
+                    "name": "contenus_dispo",
+                    "utterances_with_slots": [
+                      "Quels types de films sont disponibles sur la plateforme CINAF ?\r",
+                      "Y a-t-il des séries africaines proposées sur CINAF ?\r",
+                      "CINAF offre-t-elle des animations ou des contenus pour enfants ?\r",
+                      "Quels genres de programmes culturels peut-on trouver sur CINAF ?\r",
+                      "Est-ce que CINAF propose des courts-métrages en plus des longs-métrages ?\r",
+                      "Y a-t-il des documentaires disponibles sur la plateforme CINAF ?\r",
+                      "Comment puis-je accéder aux événements en ligne organisés par CINAF, comme les projections ou festivals ?\r",
+                      "CINAF met-elle en avant des talents émergents du cinéma africain ?\r",
+                      "Quels types de contenus exclusifs sont disponibles uniquement sur CINAF ?\r",
+                      "Peut-on trouver des critiques ou des analyses de films sur la plateforme CINAF ?\r",
+                      "L'application CINAF propose-t-elle des fonctionnalités pour découvrir de nouveaux contenus recommandés ?"
+                    ]
+                  }
+                }
+              },
+              "category": "Flow Logic",
+              "nodeId": "nd-352e824d21",
+              "generative": null,
+              "label": "Intent is : contenus_dispo",
+              "description": "",
+              "destination": {
+                "node": "nd-c4e175552a"
+              },
+              "transitions": []
+            }
+          ],
+          "defaultTransition": {
+            "targetNodeId": null
+          },
+          "id": "nd-352e824d21",
+          "name": "autres_questions"
+        },
+        {
+          "type": "standard",
+          "deletable": true,
+          "x": 1125,
+          "y": 465,
+          "instructions": [
+            {
+              "id": "ins-4b9cd95679",
+              "category": "Send Messages",
+              "type": "content",
+              "content": {
+                "type": "text",
+                "text": {
+                  "valueType": "dynamic",
+                  "dynamicValue": "Pour les utilisateurs d'iPhone (iOS) :\nAccédez à l'App Store :\nOuvrez l'App Store sur votre iPhone.\nRecherchez l'application CINAF :\nUtilisez la barre de recherche pour trouver \"CINAF TV\".\nTéléchargez l'application :\nCliquez sur le bouton \"Obtenir\" ou sur le symbole de téléchargement pour installer l'application.\nOuvrez l'application :\nUne fois installée, ouvrez l'application depuis votre écran d'accueil.",
+                  "staticValue": ""
+                },
+                "typing": {
+                  "valueType": "static",
+                  "staticValue": true
+                }
+              },
+              "nodeId": "nd-9d45ab1b16",
+              "transitions": []
+            },
+            {
+              "id": "ins-0a28a9ec93",
+              "category": "Send Messages",
+              "type": "content",
+              "content": {
+                "type": "text",
+                "text": {
+                  "valueType": "dynamic",
+                  "dynamicValue": "Pour les utilisateurs d'Android :\nAccédez au Google Play Store :\nOuvrez le Play Store sur votre appareil Android.\nRecherchez CINAF :\nTapez \"CINAF\" dans la barre de recherche.\nTéléchargez l'application :\nCliquez sur \"Installer\" pour télécharger et installer l'application sur votre appareil.\nOuvrez l'application :\nUne fois l'installation terminée, ouvrez l'application depuis votre écran d'accueil ou votre tiroir d'applications.",
+                  "staticValue": ""
+                },
+                "typing": {
+                  "valueType": "static",
+                  "staticValue": true
+                }
+              },
+              "nodeId": "nd-9d45ab1b16",
+              "transitions": []
+            }
+          ],
+          "defaultTransition": {
+            "targetNodeId": "nd-1eedbf43ad"
+          },
+          "id": "nd-9d45ab1b16",
+          "name": "download_app"
+        },
+        {
+          "type": "standard",
+          "deletable": true,
+          "x": 915,
+          "y": 720,
+          "instructions": [
+            {
+              "id": "ins-51f2531aa6",
+              "category": "Send Messages",
+              "type": "content",
+              "content": {
+                "type": "text",
+                "text": {
+                  "valueType": "dynamic",
+                  "dynamicValue": "Nous sommes ouvert tous les jours, de 07h à 20h.",
+                  "staticValue": ""
+                },
+                "typing": {
+                  "valueType": "static",
+                  "staticValue": true
+                }
+              },
+              "nodeId": "nd-d8f9091e29",
+              "transitions": []
+            }
+          ],
+          "defaultTransition": {
+            "targetNodeId": "nd-1eedbf43ad"
+          },
+          "id": "nd-d8f9091e29",
+          "name": "ouverture"
+        },
+        {
+          "type": "standard",
+          "deletable": true,
+          "x": 960,
+          "y": 900,
+          "instructions": [
+            {
+              "id": "ins-37ae8e7b9a",
+              "category": "Send Messages",
+              "type": "content",
+              "content": {
+                "type": "text",
+                "text": {
+                  "valueType": "dynamic",
+                  "dynamicValue": "Pour payer un abonnement sur la plateforme CINAF, voici les étapes à suivre :\n1 - Télécharger l'application ou visiter le site web :\n      - Téléchargez l'application CINAF depuis l'App Store ou Google Play, ou visitez le site web CINAF.",
+                  "staticValue": ""
+                },
+                "typing": {
+                  "valueType": "static",
+                  "staticValue": true
+                }
+              },
+              "nodeId": "nd-e6d77d0bbe",
+              "transitions": []
+            },
+            {
+              "id": "ins-f25fbce45b",
+              "category": "Send Messages",
+              "type": "content",
+              "content": {
+                "type": "text",
+                "text": {
+                  "valueType": "dynamic",
+                  "dynamicValue": "2 - Créer un compte :\n      - Si vous n'avez pas encore de compte, inscrivez-vous en fournissant les informations requises.",
+                  "staticValue": ""
+                },
+                "typing": {
+                  "valueType": "static",
+                  "staticValue": true
+                }
+              },
+              "nodeId": "nd-e6d77d0bbe",
+              "transitions": []
+            },
+            {
+              "id": "ins-eb10afe41e",
+              "category": "Send Messages",
+              "type": "content",
+              "content": {
+                "type": "text",
+                "text": {
+                  "valueType": "dynamic",
+                  "dynamicValue": "3 - Choisir un plan d'abonnement :\n      - CINAF propose différents plans d'abonnement, notamment des options mensuelles et annuelles. Vérifiez les détails des plans disponibles.",
+                  "staticValue": ""
+                },
+                "typing": {
+                  "valueType": "static",
+                  "staticValue": true
+                }
+              },
+              "nodeId": "nd-e6d77d0bbe",
+              "transitions": []
+            },
+            {
+              "id": "ins-7f12671f5a",
+              "category": "Send Messages",
+              "type": "content",
+              "content": {
+                "type": "text",
+                "text": {
+                  "valueType": "dynamic",
+                  "dynamicValue": "4 - Procéder au paiement :\n      - Une fois que vous avez sélectionné votre plan, suivez les instructions pour effectuer le paiement. Les options de paiement sécurisées sont généralement disponibles, incluant des cartes de crédit et d'autres méthodes de paiement.",
+                  "staticValue": ""
+                },
+                "typing": {
+                  "valueType": "static",
+                  "staticValue": true
+                }
+              },
+              "nodeId": "nd-e6d77d0bbe",
+              "transitions": []
+            },
+            {
+              "id": "ins-bf2ccae247",
+              "category": "Send Messages",
+              "type": "content",
+              "content": {
+                "type": "text",
+                "text": {
+                  "valueType": "dynamic",
+                  "dynamicValue": "5 - Confirmation de l'abonnement :\n      - Après avoir effectué le paiement, vous recevrez une confirmation de votre abonnement par e-mail ou via l'application.",
+                  "staticValue": ""
+                },
+                "typing": {
+                  "valueType": "static",
+                  "staticValue": true
+                }
+              },
+              "nodeId": "nd-e6d77d0bbe",
+              "transitions": []
+            },
+            {
+              "id": "ins-f45af66992",
+              "category": "Send Messages",
+              "type": "content",
+              "content": {
+                "type": "text",
+                "text": {
+                  "valueType": "dynamic",
+                  "dynamicValue": "6 - Accéder au contenu :\n      - Une fois abonné, vous pourrez accéder à tout le contenu disponible sur la plateforme CINAF.",
+                  "staticValue": ""
+                },
+                "typing": {
+                  "valueType": "static",
+                  "staticValue": true
+                }
+              },
+              "nodeId": "nd-e6d77d0bbe",
+              "transitions": []
+            },
+            {
+              "id": "ins-8d21709253",
+              "category": "Send Messages",
+              "type": "content",
+              "content": {
+                "type": "text",
+                "text": {
+                  "valueType": "dynamic",
+                  "dynamicValue": "Options d'abonnement\n\n- Des packs comme \"Pack argent\" (34,99 $), \"Pack bronze\" (17,99 $) et \"Pack diamant\" (59,99 $) sont mentionnés comme options d'achat dans l'application",
+                  "staticValue": ""
+                },
+                "typing": {
+                  "valueType": "static",
+                  "staticValue": true
+                }
+              },
+              "nodeId": "nd-e6d77d0bbe",
+              "transitions": []
+            }
+          ],
+          "defaultTransition": {
+            "targetNodeId": "nd-1eedbf43ad"
+          },
+          "id": "nd-e6d77d0bbe",
+          "name": "abonnement"
+        },
+        {
+          "type": "standard",
+          "deletable": true,
+          "x": 960,
+          "y": 1320,
+          "instructions": [
+            {
+              "id": "ins-7c400d53aa",
+              "category": "Send Messages",
+              "type": "content",
+              "content": {
+                "type": "text",
+                "text": {
+                  "valueType": "dynamic",
+                  "dynamicValue": "Nous proposons une large gamme de contenus axés sur le cinéma africain. Voici les principaux types de contenus disponibles sur la plateforme :\n   - Films :\n      - Offrant un vaste catalogue de films africains, incluant des productions locales de divers genres tels que la comédie, le drame, l'action, et bien d'autres.",
+                  "staticValue": ""
+                },
+                "typing": {
+                  "valueType": "static",
+                  "staticValue": true
+                }
+              },
+              "nodeId": "nd-c4e175552a",
+              "transitions": []
+            },
+            {
+              "id": "ins-04e3fa5f4d",
+              "category": "Send Messages",
+              "type": "content",
+              "content": {
+                "type": "text",
+                "text": {
+                  "valueType": "dynamic",
+                  "dynamicValue": "   - Séries :\n      - La plateforme propose également des séries africaines, permettant aux utilisateurs de suivre des histoires captivantes sur plusieurs épisodes.",
+                  "staticValue": ""
+                },
+                "typing": {
+                  "valueType": "static",
+                  "staticValue": true
+                }
+              },
+              "nodeId": "nd-c4e175552a",
+              "transitions": []
+            },
+            {
+              "id": "ins-31f267bbfa",
+              "category": "Send Messages",
+              "type": "content",
+              "content": {
+                "type": "text",
+                "text": {
+                  "valueType": "dynamic",
+                  "dynamicValue": "   - Courts-métrages :\n      - Mettant en avant des courts-métrages qui explorent différentes thématiques culturelles et sociales.",
+                  "staticValue": ""
+                },
+                "typing": {
+                  "valueType": "static",
+                  "staticValue": true
+                }
+              },
+              "nodeId": "nd-c4e175552a",
+              "transitions": []
+            },
+            {
+              "id": "ins-32d5b99027",
+              "category": "Send Messages",
+              "type": "content",
+              "content": {
+                "type": "text",
+                "text": {
+                  "valueType": "dynamic",
+                  "dynamicValue": "   - Programmes culturels :\n      - La plateforme inclut des programmes qui célèbrent les cultures, langues et histoires du continent africain, contribuant à la promotion des talents émergents.",
+                  "staticValue": ""
+                },
+                "typing": {
+                  "valueType": "static",
+                  "staticValue": true
+                }
+              },
+              "nodeId": "nd-c4e175552a",
+              "transitions": []
+            }
+          ],
+          "defaultTransition": {
+            "targetNodeId": "nd-1eedbf43ad"
+          },
+          "id": "nd-c4e175552a",
+          "name": "contenu_dispo"
+        },
+        {
+          "type": "standard",
+          "deletable": true,
+          "x": 1470,
+          "y": 945,
+          "instructions": [
+            {
+              "id": "ins-e082c41d9a",
+              "category": "Capture Information",
+              "type": "capture",
+              "entityId": "prompts://SingleChoice/v1",
+              "entityName": "Single Choice",
+              "kbPriority": {
+                "enabled": true,
+                "searchScope": "all",
+                "kbs": []
+              },
+              "nodeId": "nd-1eedbf43ad",
+              "question": {
+                "valueType": "dynamic",
+                "dynamicValue": "Avez-vous d'autres préoccupations ?",
+                "staticValue": ""
+              },
+              "validation": {
+                "validators": []
+              },
+              "choice": {
+                "options": {
+                  "valueType": "static",
+                  "staticValue": [
+                    {
+                      "label": {
+                        "valueType": "dynamic",
+                        "dynamicValue": "Oui"
+                      },
+                      "value": "Oui",
+                      "enabled": true
+                    },
+                    {
+                      "label": {
+                        "valueType": "dynamic",
+                        "dynamicValue": "Non"
+                      },
+                      "value": "Non",
+                      "enabled": true
+                    }
+                  ],
+                  "dynamicValue": ""
+                }
+              },
+              "retry": {
+                "maxRetries": 2,
+                "retryMessage": {
+                  "staticValue": "",
+                  "dynamicValue": "",
+                  "valueType": "dynamic"
+                }
+              },
+              "cancellation": {
+                "cancellable": true,
+                "confirmCancel": true,
+                "confirmCancelMessage": {
+                  "staticValue": "",
+                  "dynamicValue": "",
+                  "valueType": "static"
+                }
+              },
+              "handleFailure": false,
+              "historyLookback": 0,
+              "skipIfAlreadyFilled": false,
+              "transitions": [
+                {
+                  "id": "trs-ed66ad817f",
+                  "type": "transition",
+                  "label": "Oui",
+                  "condition": {
+                    "type": "expression",
+                    "payload": "__CHOICE=Oui"
+                  },
+                  "destination": {
+                    "node": "nd-352e824d21"
+                  }
+                },
+                {
+                  "id": "trs-4a5813ed82",
+                  "type": "transition",
+                  "label": "Non",
+                  "condition": {
+                    "type": "expression",
+                    "payload": "__CHOICE=Non"
+                  },
+                  "destination": {
+                    "node": "nd-a6cb9fbad4"
+                  }
+                }
+              ],
+              "prompt": {
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "You are ExtractGPT and your only goal is to generate useful content in JSON format for developers to parse and use. You don't know any other language than JSON."
+                  },
+                  {
+                    "role": "user",
+                    "content": "```typescript\n/** The user answer to the question \"Which one would you like? Choices: [ 1) Red Apple, 2) Yellow Apple, 3) Dark Banana ]\" */\ninterface Output = { choice: {{CHOICES_TYPINGS}} }\n```\n\nHere is a conversation between me and a user. Transcript:\n\"\"\"\n(...)\nagent: Which one would you like? Choices: [ 1) Red Apple, 2) Yellow Apple, 3) Dark Banana ]\nuser: I will go with the second one please\n\"\"\""
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "{\"choice\":\"Yellow Apple\"}"
+                  },
+                  {
+                    "role": "user",
+                    "content": "\nNow, forget about the previous transcripts. These were just examples, don't consider those as valid transcripts for this new task.\n\n###\n\nThe current Date is {{CURRENT_DATE_TIME}}.\n\nAt this point of the conversation, I need require the user to fill the output in following JSON output to complete the task.\nIf more than one property, try to extract each of them the best you can.\n\n```typescript\n/** The user answer to the question \"{{QUESTION}}\" */\ninterface Output = { choice: {{CHOICES_TYPINGS}} }\n```\n\nHere is a conversation between me and a user. Transcript:\n\"\"\"\n(...)\n{{TRANSCRIPT}}\n\"\"\"\n\nIn the last user message, here are the entities found:\n\"\"\"\nENTITIES_IDENTIFIED\n\"\"\"\n\nI need you to extract from the conversation transcript above the values the user has provided.\nIf the user has not provided the information I need, I need you to set the value of the missing answer properties to null.\nHave some tolerance to typos and variations in how the user selects from the possible values.\n\n\n\nNow, please reply to me with the above JSON output and nothing but JSON.\nYou should not explain your answer and should not talk back to me. Just JSON."
+                  }
+                ],
+                "model": "gpt-3.5-turbo",
+                "temperature": 0
+              }
+            }
+          ],
+          "defaultTransition": {
+            "targetNodeId": null
+          },
+          "id": "nd-1eedbf43ad",
+          "name": "decision"
+        },
+        {
+          "type": "standard",
+          "deletable": true,
+          "x": 2355,
+          "y": -390,
+          "instructions": [
+            {
+              "type": "ai",
+              "category": "AI",
+              "id": "ins-6f2ea36bc2",
+              "task": {
+                "instructions": "Answers the user, based on the cinaf.tv/fr web site and stores the answer in a variable called UserAnswer",
+                "input": "user input : {{event.preview}}",
+                "outputVariableIds": [
+                  "var-a073a6680c"
+                ],
+                "handleFailure": true,
+                "examples": [
+                  {
+                    "input": "",
+                    "output": {}
+                  }
+                ],
+                "model": "openai__gpt-4o-mini-2024-07-18",
+                "temperature": 0.1,
+                "version": "2.0"
+              },
+              "nodeId": "nd-be9e049fe3",
+              "label": "UserAnswer",
+              "transitions": [
+                {
+                  "id": "trs-599ba36210",
+                  "type": "transition",
+                  "label": "On Failure",
+                  "condition": {
+                    "type": "expression",
+                    "payload": "failed"
+                  },
+                  "destination": {}
+                }
+              ],
+              "prompt": {
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "Reply with the output of the task below by following the user instructions. Reply using the \"extract_from_output\" function. Do not repeat the Input."
+                  },
+                  {
+                    "role": "user",
+                    "content": "I have a task for you to complete. Here are the instructions:\nAnswers the user, based on the cinaf.tv/fr web site and stores the answer in a variable called UserAnswer"
+                  },
+                  {
+                    "role": "user",
+                    "content": "Input:\n\"\"\"\n{{TASK_INPUT}}\n\"\"\""
+                  }
+                ],
+                "model": "openai__gpt-4o-mini-2024-07-18",
+                "temperature": 0.1,
+                "functions": {
+                  "extract_from_output": {
+                    "description": "Call this function with the requested parameters",
+                    "parameters": {
+                      "type": "object",
+                      "properties": {
+                        "UserAnswer": {
+                          "type": "string",
+                          "description": "",
+                          "default": ""
+                        }
+                      },
+                      "required": [
+                        "UserAnswer"
+                      ],
+                      "additionalProperties": false,
+                      "$schema": "http://json-schema.org/draft-07/schema#"
+                    }
+                  },
+                  "unable_to_complete_task": {
+                    "description": "Call this function if you are unable to complete the task",
+                    "parameters": {
+                      "type": "object",
+                      "properties": {
+                        "reason": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Reason why the task could not be completed",
+                          "x-zui": {}
+                        }
+                      },
+                      "required": [
+                        "reason"
+                      ],
+                      "additionalProperties": false,
+                      "x-zui": {}
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "id": "ins-b17d24c54e",
+              "category": "Send Messages",
+              "type": "content",
+              "content": {
+                "type": "text",
+                "text": {
+                  "valueType": "dynamic",
+                  "dynamicValue": "@workflow.UserAnswer ",
+                  "staticValue": ""
+                },
+                "typing": {
+                  "valueType": "static",
+                  "staticValue": true
+                }
+              },
+              "nodeId": "nd-be9e049fe3",
+              "transitions": []
+            }
+          ],
+          "defaultTransition": {
+            "targetNodeId": "nd-02602d3ccb"
+          },
+          "id": "nd-be9e049fe3",
+          "name": "FallbackAI"
+        },
+        {
+          "type": "standard",
+          "deletable": true,
+          "x": 1890,
+          "y": 15,
+          "instructions": [
+            {
+              "id": "ins-4e9cb4493b",
+              "category": "Send Messages",
+              "type": "content",
+              "content": {
+                "type": "text",
+                "text": {
+                  "valueType": "dynamic",
+                  "dynamicValue": "Désolé, je n'ai pas bien compris votre demande. Puis-je vous proposer les options suivantes ?",
+                  "staticValue": ""
+                },
+                "typing": {
+                  "valueType": "static",
+                  "staticValue": true
+                }
+              },
+              "nodeId": "nd-5e5adaf62a",
+              "transitions": []
+            },
+            {
+              "id": "ins-cb148ed896",
+              "category": "Capture Information",
+              "type": "capture",
+              "entityId": "prompts://SingleChoice/v1",
+              "entityName": "Single Choice",
+              "kbPriority": {
+                "enabled": true,
+                "searchScope": "all",
+                "kbs": []
+              },
+              "nodeId": "nd-5e5adaf62a",
+              "question": {
+                "staticValue": "",
+                "dynamicValue": "",
+                "valueType": "dynamic"
+              },
+              "validation": {
+                "validators": []
+              },
+              "choice": {
+                "options": {
+                  "valueType": "static",
+                  "staticValue": [
+                    {
+                      "label": {
+                        "valueType": "dynamic",
+                        "dynamicValue": "FAQ Générales"
+                      },
+                      "value": "FAQ Générales",
+                      "enabled": true
+                    },
+                    {
+                      "label": {
+                        "valueType": "dynamic",
+                        "dynamicValue": "Problème techniques"
+                      },
+                      "value": "Problème techniques",
+                      "enabled": true
+                    },
+                    {
+                      "label": {
+                        "valueType": "dynamic",
+                        "dynamicValue": "Questions sur l'abonnement"
+                      },
+                      "value": "Questions sur l'abonnement",
+                      "enabled": true
+                    },
+                    {
+                      "label": {
+                        "valueType": "dynamic",
+                        "dynamicValue": "Autres questions"
+                      },
+                      "value": "Autres questions",
+                      "enabled": true
+                    },
+                    {
+                      "label": {
+                        "valueType": "dynamic",
+                        "dynamicValue": "Menu principal"
+                      },
+                      "value": "Menu principal",
+                      "enabled": true
+                    },
+                    {
+                      "label": {
+                        "valueType": "dynamic",
+                        "dynamicValue": "Contacter le service client"
+                      },
+                      "value": "Contacter le service client",
+                      "enabled": true
+                    }
+                  ],
+                  "dynamicValue": ""
+                }
+              },
+              "retry": {
+                "maxRetries": 2,
+                "retryMessage": {
+                  "staticValue": "",
+                  "dynamicValue": "",
+                  "valueType": "dynamic"
+                }
+              },
+              "cancellation": {
+                "cancellable": true,
+                "confirmCancel": true,
+                "confirmCancelMessage": {
+                  "staticValue": "",
+                  "dynamicValue": "",
+                  "valueType": "static"
+                }
+              },
+              "handleFailure": false,
+              "historyLookback": 0,
+              "skipIfAlreadyFilled": false,
+              "transitions": [
+                {
+                  "id": "trs-b1a61477cb",
+                  "type": "transition",
+                  "label": "FAQ Générales",
+                  "condition": {
+                    "type": "expression",
+                    "payload": "__CHOICE=FAQ Générales"
+                  },
+                  "destination": {
+                    "node": "nd-10bed14265"
+                  }
+                },
+                {
+                  "id": "trs-2e0b36ba47",
+                  "type": "transition",
+                  "label": "Problème techniques",
+                  "condition": {
+                    "type": "expression",
+                    "payload": "__CHOICE=Problème techniques"
+                  },
+                  "destination": {
+                    "node": "nd-3c07f4464a"
+                  }
+                },
+                {
+                  "id": "trs-f19494a20e",
+                  "type": "transition",
+                  "label": "Questions sur l'abonnement",
+                  "condition": {
+                    "type": "expression",
+                    "payload": "__CHOICE=Questions sur l'abonnement"
+                  },
+                  "destination": {
+                    "node": "nd-f6f8163027"
+                  }
+                },
+                {
+                  "id": "trs-b2ebb38400",
+                  "type": "transition",
+                  "label": "Autres questions",
+                  "condition": {
+                    "type": "expression",
+                    "payload": "__CHOICE=Autres questions"
+                  },
+                  "destination": {
+                    "node": "nd-352e824d21"
+                  }
+                },
+                {
+                  "id": "trs-db623df22b",
+                  "type": "transition",
+                  "label": "Menu principal",
+                  "condition": {
+                    "type": "expression",
+                    "payload": "__CHOICE=Menu principal"
+                  },
+                  "destination": {
+                    "node": "nd-8bf8939b68"
+                  }
+                },
+                {
+                  "id": "trs-518a5a6edc",
+                  "type": "transition",
+                  "label": "Contacter le service client",
+                  "condition": {
+                    "type": "expression",
+                    "payload": "__CHOICE=Contacter le service client"
+                  },
+                  "destination": {
+                    "node": "nd-2f37a64432"
+                  }
+                }
+              ],
+              "prompt": {
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "You are ExtractGPT and your only goal is to generate useful content in JSON format for developers to parse and use. You don't know any other language than JSON."
+                  },
+                  {
+                    "role": "user",
+                    "content": "```typescript\n/** The user answer to the question \"Which one would you like? Choices: [ 1) Red Apple, 2) Yellow Apple, 3) Dark Banana ]\" */\ninterface Output = { choice: {{CHOICES_TYPINGS}} }\n```\n\nHere is a conversation between me and a user. Transcript:\n\"\"\"\n(...)\nagent: Which one would you like? Choices: [ 1) Red Apple, 2) Yellow Apple, 3) Dark Banana ]\nuser: I will go with the second one please\n\"\"\""
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "{\"choice\":\"Yellow Apple\"}"
+                  },
+                  {
+                    "role": "user",
+                    "content": "\nNow, forget about the previous transcripts. These were just examples, don't consider those as valid transcripts for this new task.\n\n###\n\nThe current Date is {{CURRENT_DATE_TIME}}.\n\nAt this point of the conversation, I need require the user to fill the output in following JSON output to complete the task.\nIf more than one property, try to extract each of them the best you can.\n\n```typescript\n/** The user answer to the question \"{{QUESTION}}\" */\ninterface Output = { choice: {{CHOICES_TYPINGS}} }\n```\n\nHere is a conversation between me and a user. Transcript:\n\"\"\"\n(...)\n{{TRANSCRIPT}}\n\"\"\"\n\nIn the last user message, here are the entities found:\n\"\"\"\nENTITIES_IDENTIFIED\n\"\"\"\n\nI need you to extract from the conversation transcript above the values the user has provided.\nIf the user has not provided the information I need, I need you to set the value of the missing answer properties to null.\nHave some tolerance to typos and variations in how the user selects from the possible values.\n\n\n\nNow, please reply to me with the above JSON output and nothing but JSON.\nYou should not explain your answer and should not talk back to me. Just JSON."
+                  }
+                ],
+                "model": "gpt-3.5-turbo",
+                "temperature": 0
+              }
+            }
+          ],
+          "defaultTransition": {
+            "targetNodeId": null
+          },
+          "id": "nd-5e5adaf62a",
+          "name": "Fallback"
+        },
+        {
+          "type": "standard",
+          "deletable": true,
+          "x": 2355,
+          "y": -165,
+          "instructions": [
+            {
+              "id": "ins-38c0cffbce",
+              "category": "Send Messages",
+              "type": "content",
+              "content": {
+                "type": "text",
+                "text": {
+                  "valueType": "dynamic",
+                  "dynamicValue": " Veuillez joindre le service client Cinaf au contact ci-après : +237676195352",
+                  "staticValue": ""
+                },
+                "typing": {
+                  "valueType": "static",
+                  "staticValue": true
+                }
+              },
+              "nodeId": "nd-2f37a64432"
+            }
+          ],
+          "defaultTransition": {
+            "targetNodeId": "nd-80ac4ff158"
+          },
+          "id": "nd-2f37a64432",
+          "name": "Standard3"
+        },
+        {
+          "type": "standard",
+          "deletable": true,
+          "x": 1860,
+          "y": -495,
+          "instructions": [
+            {
+              "id": "ins-4ccb10b350",
+              "category": "Capture Information",
+              "type": "capture",
+              "entityId": "prompts://RawInput/v1",
+              "entityName": "Raw Input",
+              "kbPriority": {
+                "enabled": true,
+                "searchScope": "all",
+                "kbs": []
+              },
+              "nodeId": "nd-58287506bc",
+              "question": {
+                "valueType": "dynamic",
+                "dynamicValue": "Nous sommes à votre disposition. Parler nous de notre préoccupation.",
+                "staticValue": ""
+              },
+              "validation": {
+                "validators": []
+              },
+              "choice": {
+                "options": {
+                  "staticValue": [],
+                  "dynamicValue": "",
+                  "valueType": "static"
+                }
+              },
+              "retry": {
+                "maxRetries": 2,
+                "retryMessage": {
+                  "staticValue": "",
+                  "dynamicValue": "",
+                  "valueType": "dynamic"
+                }
+              },
+              "cancellation": {
+                "cancellable": true,
+                "confirmCancel": true,
+                "confirmCancelMessage": {
+                  "staticValue": "",
+                  "dynamicValue": "",
+                  "valueType": "static"
+                }
+              },
+              "handleFailure": false,
+              "historyLookback": 0,
+              "skipIfAlreadyFilled": false,
+              "transitions": [],
+              "prompt": {
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "You are ExtractGPT and your only goal is to generate useful content in JSON format for developers to parse and use. You don't know any other language than JSON."
+                  },
+                  {
+                    "role": "user",
+                    "content": "```typescript\n/** The user answer to the question \"undefined\" */\ninterface Output = { value: any }\n```\n\nHere is a conversation between me and a user. Transcript:\n\"\"\"\n(...)\nagent: undefined\nuser: undefined\n\"\"\""
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "{}"
+                  },
+                  {
+                    "role": "user",
+                    "content": "\nNow, forget about the previous transcripts. These were just examples, don't consider those as valid transcripts for this new task.\n\n###\n\nThe current Date is {{CURRENT_DATE_TIME}}.\n\nAt this point of the conversation, I need require the user to fill the output in following JSON output to complete the task.\nIf more than one property, try to extract each of them the best you can.\n\n```typescript\n/** The user answer to the question \"{{QUESTION}}\" */\ninterface Output = { value: any }\n```\n\nHere is a conversation between me and a user. Transcript:\n\"\"\"\n(...)\n{{TRANSCRIPT}}\n\"\"\"\n\nIn the last user message, here are the entities found:\n\"\"\"\nENTITIES_IDENTIFIED\n\"\"\"\n\nI need you to extract from the conversation transcript above the values the user has provided.\nIf the user has not provided the information I need, I need you to set the value of the missing answer properties to null.\nHave some tolerance to typos and variations in how the user selects from the possible values.\n\n\n\nNow, please reply to me with the above JSON output and nothing but JSON.\nYou should not explain your answer and should not talk back to me. Just JSON."
+                  }
+                ],
+                "model": "gpt-3.5-turbo",
+                "temperature": 0
+              }
+            }
+          ],
+          "defaultTransition": {
+            "targetNodeId": "nd-be9e049fe3"
+          },
+          "id": "nd-58287506bc",
+          "name": "chat"
+        },
+        {
+          "type": "standard",
+          "deletable": true,
+          "x": 2670,
+          "y": -600,
+          "instructions": [
+            {
+              "id": "ins-d736d86776",
+              "category": "Capture Information",
+              "type": "capture",
+              "entityId": "prompts://RawInput/v1",
+              "entityName": "Raw Input",
+              "kbPriority": {
+                "enabled": true,
+                "searchScope": "all",
+                "kbs": []
+              },
+              "nodeId": "nd-02602d3ccb",
+              "question": {
+                "staticValue": "",
+                "dynamicValue": "",
+                "valueType": "dynamic"
+              },
+              "validation": {
+                "validators": []
+              },
+              "choice": {
+                "options": {
+                  "staticValue": [],
+                  "dynamicValue": "",
+                  "valueType": "static"
+                }
+              },
+              "retry": {
+                "maxRetries": 2,
+                "retryMessage": {
+                  "staticValue": "",
+                  "dynamicValue": "",
+                  "valueType": "dynamic"
+                }
+              },
+              "cancellation": {
+                "cancellable": true,
+                "confirmCancel": true,
+                "confirmCancelMessage": {
+                  "staticValue": "",
+                  "dynamicValue": "",
+                  "valueType": "static"
+                }
+              },
+              "handleFailure": false,
+              "historyLookback": 0,
+              "skipIfAlreadyFilled": false,
+              "transitions": [],
+              "prompt": {
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "You are ExtractGPT and your only goal is to generate useful content in JSON format for developers to parse and use. You don't know any other language than JSON."
+                  },
+                  {
+                    "role": "user",
+                    "content": "```typescript\n/** The user answer to the question \"undefined\" */\ninterface Output = { value: any }\n```\n\nHere is a conversation between me and a user. Transcript:\n\"\"\"\n(...)\nagent: undefined\nuser: undefined\n\"\"\""
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "{}"
+                  },
+                  {
+                    "role": "user",
+                    "content": "\nNow, forget about the previous transcripts. These were just examples, don't consider those as valid transcripts for this new task.\n\n###\n\nThe current Date is {{CURRENT_DATE_TIME}}.\n\nAt this point of the conversation, I need require the user to fill the output in following JSON output to complete the task.\nIf more than one property, try to extract each of them the best you can.\n\n```typescript\n/** The user answer to the question \"{{QUESTION}}\" */\ninterface Output = { value: any }\n```\n\nHere is a conversation between me and a user. Transcript:\n\"\"\"\n(...)\n{{TRANSCRIPT}}\n\"\"\"\n\nIn the last user message, here are the entities found:\n\"\"\"\nENTITIES_IDENTIFIED\n\"\"\"\n\nI need you to extract from the conversation transcript above the values the user has provided.\nIf the user has not provided the information I need, I need you to set the value of the missing answer properties to null.\nHave some tolerance to typos and variations in how the user selects from the possible values.\n\n\n\nNow, please reply to me with the above JSON output and nothing but JSON.\nYou should not explain your answer and should not talk back to me. Just JSON."
+                  }
+                ],
+                "model": "gpt-3.5-turbo",
+                "temperature": 0
+              }
+            }
+          ],
+          "defaultTransition": {
+            "targetNodeId": "nd-be9e049fe3"
+          },
+          "id": "nd-02602d3ccb",
+          "name": "Standard4"
+        }
+      ],
+      "parentFolder": "root"
+    },
+    {
+      "id": "wf-63a5a00b61",
+      "name": "numéro client",
+      "startNode": "nd-72dc167c12",
+      "variables": [],
+      "links": [
+        {
+          "id": "lnk-f37bd26fde",
+          "source": "nd-72dc167c12",
+          "target": "nd-f38d0f20c6",
+          "sourcePort": "trs-465afa7873"
+        }
+      ],
+      "nodes": [
+        {
+          "id": "nd-72dc167c12",
+          "name": "Entry",
+          "type": "entry",
+          "deletable": false,
+          "variables": [],
+          "instructions": [
+            {
+              "id": "trs-465afa7873",
+              "type": "transition",
+              "condition": {
+                "type": "expression",
+                "payload": "true"
+              },
+              "destination": {
+                "node": "nd-f38d0f20c6"
+              },
+              "transitions": [],
+              "nodeId": "nd-72dc167c12",
+              "generative": {
+                "properties": {
+                  "condition": true
+                },
+                "suggestion": {},
+                "label": ""
+              },
+              "label": "",
+              "description": ""
+            }
+          ],
+          "x": 100,
+          "y": 100
+        },
+        {
+          "id": "nd-94e560c5dc",
+          "name": "Exit",
+          "type": "exit",
+          "variables": [],
+          "deletable": false,
+          "instructions": [
+            {
+              "id": "trs-4760016ce0",
+              "type": "transition",
+              "condition": {
+                "type": "expression",
+                "payload": "true"
+              },
+              "destination": {
+                "node": "#"
+              },
+              "transitions": [],
+              "nodeId": "nd-94e560c5dc"
+            }
+          ],
+          "x": 800,
+          "y": 100
+        },
+        {
+          "id": "nd-f38d0f20c6",
+          "name": "numéro_client",
+          "type": "standard",
+          "deletable": true,
+          "instructions": [
+            {
+              "id": "ins-c0c002bfa0",
+              "type": "content",
+              "content": {
+                "type": "text",
+                "text": {
+                  "valueType": "dynamic",
+                  "dynamicValue": "Pour renouveler  votre numéro client, faite comme suite :",
+                  "staticValue": ""
+                },
+                "typing": {
+                  "valueType": "static",
+                  "staticValue": true
+                }
+              },
+              "nodeId": "nd-f38d0f20c6",
+              "transitions": []
+            },
+            {
+              "id": "ins-2e0928d59f",
+              "category": "Send Messages",
+              "type": "content",
+              "content": {
+                "type": "text",
+                "text": {
+                  "valueType": "dynamic",
+                  "dynamicValue": "- Connecter vous à votre compte sur notre plate-forme ;",
+                  "staticValue": ""
+                },
+                "typing": {
+                  "valueType": "static",
+                  "staticValue": true
+                }
+              },
+              "nodeId": "nd-f38d0f20c6",
+              "transitions": []
+            },
+            {
+              "id": "ins-a0bca97158",
+              "category": "Send Messages",
+              "type": "content",
+              "content": {
+                "type": "text",
+                "text": {
+                  "valueType": "dynamic",
+                  "dynamicValue": "- Faite un clic sur votre icône d'utilisateu",
+                  "staticValue": ""
+                },
+                "typing": {
+                  "valueType": "static",
+                  "staticValue": true
+                }
+              },
+              "nodeId": "nd-f38d0f20c6",
+              "transitions": []
+            },
+            {
+              "id": "ins-6add8ba07a",
+              "category": "Send Messages",
+              "type": "content",
+              "content": {
+                "type": "text",
+                "text": {
+                  "valueType": "dynamic",
+                  "dynamicValue": "- Puis faite une capture d'écran et déposer ici.",
+                  "staticValue": ""
+                },
+                "typing": {
+                  "valueType": "static",
+                  "staticValue": true
+                }
+              },
+              "nodeId": "nd-f38d0f20c6",
+              "transitions": []
+            },
+            {
+              "id": "ins-3e13fbbfc3",
+              "category": "Send Messages",
+              "type": "content",
+              "content": {
+                "type": "text",
+                "text": {
+                  "valueType": "dynamic",
+                  "dynamicValue": "Exemple de la capture attendue :",
+                  "staticValue": ""
+                },
+                "typing": {
+                  "valueType": "static",
+                  "staticValue": true
+                }
+              },
+              "nodeId": "nd-f38d0f20c6",
+              "transitions": []
+            },
+            {
+              "id": "ins-39c4a5e35e",
+              "category": "Send Messages",
+              "type": "content",
+              "content": {
+                "type": "image",
+                "imageUrl": {
+                  "staticValue": "https://s3.us-east-1.amazonaws.com/cloud-studio-botsbca2d619-1916w6llinepa/6feea232-9063-444d-a303-d80ba2cf5a7d/media/756f8891-fc55-4d83-95e8-acef306141c8.jpeg",
+                  "valueType": "static"
+                },
+                "title": {
+                  "valueType": "dynamic",
+                  "dynamicValue": "",
+                  "staticValue": ""
+                }
+              },
+              "nodeId": "nd-f38d0f20c6",
+              "transitions": []
+            },
+            {
+              "id": "ins-f89976a117",
+              "type": "capture",
+              "entityId": "prompts://RawInput/v1",
+              "entityName": "Raw Input",
+              "kbPriority": {
+                "enabled": true,
+                "searchScope": "all",
+                "kbs": []
+              },
+              "nodeId": "nd-f38d0f20c6",
+              "question": {
+                "valueType": "dynamic",
+                "dynamicValue": "@image",
+                "staticValue": ""
+              },
+              "validation": {
+                "validators": []
+              },
+              "choice": {
+                "options": {
+                  "staticValue": [],
+                  "dynamicValue": "",
+                  "valueType": "static"
+                }
+              },
+              "retry": {
+                "maxRetries": 2,
+                "retryMessage": {
+                  "staticValue": "",
+                  "dynamicValue": "",
+                  "valueType": "dynamic"
+                }
+              },
+              "cancellation": {
+                "cancellable": true,
+                "confirmCancel": true,
+                "confirmCancelMessage": {
+                  "staticValue": "",
+                  "dynamicValue": "",
+                  "valueType": "static"
+                }
+              },
+              "handleFailure": false,
+              "historyLookback": 0,
+              "skipIfAlreadyFilled": false,
+              "transitions": [],
+              "prompt": {
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "You are ExtractGPT and your only goal is to generate useful content in JSON format for developers to parse and use. You don't know any other language than JSON."
+                  },
+                  {
+                    "role": "user",
+                    "content": "```typescript\n/** The user answer to the question \"undefined\" */\ninterface Output = { value: any }\n```\n\nHere is a conversation between me and a user. Transcript:\n\"\"\"\n(...)\nagent: undefined\nuser: undefined\n\"\"\""
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "{}"
+                  },
+                  {
+                    "role": "user",
+                    "content": "\nNow, forget about the previous transcripts. These were just examples, don't consider those as valid transcripts for this new task.\n\n###\n\nThe current Date is {{CURRENT_DATE_TIME}}.\n\nAt this point of the conversation, I need require the user to fill the output in following JSON output to complete the task.\nIf more than one property, try to extract each of them the best you can.\n\n```typescript\n/** The user answer to the question \"{{QUESTION}}\" */\ninterface Output = { value: any }\n```\n\nHere is a conversation between me and a user. Transcript:\n\"\"\"\n(...)\n{{TRANSCRIPT}}\n\"\"\"\n\nIn the last user message, here are the entities found:\n\"\"\"\nENTITIES_IDENTIFIED\n\"\"\"\n\nI need you to extract from the conversation transcript above the values the user has provided.\nIf the user has not provided the information I need, I need you to set the value of the missing answer properties to null.\nHave some tolerance to typos and variations in how the user selects from the possible values.\n\n\n\nNow, please reply to me with the above JSON output and nothing but JSON.\nYou should not explain your answer and should not talk back to me. Just JSON."
+                  }
+                ],
+                "model": "gpt-3.5-turbo",
+                "temperature": 0
+              }
+            }
+          ],
+          "defaultTransition": {
+            "targetNodeId": null
+          },
+          "x": 450,
+          "y": 105
+        }
+      ],
+      "parentFolder": "root",
+      "description": "Récupération du numéro client de l'utilisateur",
+      "hubData": {
+        "hubId": "hsk-0bfd1f2828",
+        "workspaceId": "wkspace_01J8290B6PDAZ997NDW45Q5331",
+        "hash": "1vrl6dg",
+        "icon": "https://s3.us-east-1.amazonaws.com/cloud-studio-botsbca2d619-1916w6llinepa/public/media/37448db5-d43e-4ff5-a5ab-071e6c5e1e1d.png",
+        "hubType": "workflow:capture"
+      }
+    }
+  ],
+  "intents": [
+    {
+      "id": "int-1d90d13e54",
+      "name": "abonnement_cinaf",
+      "utterances_with_slots": [
+        "Quelles sont les différentes options de paiement disponibles pour s'abonner à CINAF ?\r",
+        "Est-il possible de payer son abonnement CINAF directement via l'application mobile ?\r",
+        "CINAF propose-t-il des abonnements mensuels et annuels ? Quelles sont les différences de tarifs ?\r",
+        "Comment puis-je mettre à jour mes informations de paiement pour mon abonnement CINAF ?\r",
+        "Y a-t-il des frais supplémentaires à prévoir en plus du coût de l'abonnement CINAF ?\r",
+        "Est-ce que CINAF offre une période d'essai gratuite avant de devoir payer un abonnement ?\r",
+        "Quelles sont les étapes à suivre pour souscrire et payer un abonnement CINAF depuis le site web ?\r",
+        "CINAF accepte-t-il les paiements par carte bancaire internationale ?\r",
+        "Existe-t-il des options de paiement local (comme Mobile Money) pour s'abonner à CINAF ?\r",
+        "Comment puis-je obtenir une facture pour mon abonnement CINAF une fois le paiement effectué ?\r",
+        "En cas de problème lors du paiement de mon abonnement CINAF, qui dois-je contacter pour obtenir de l'aide ?"
+      ]
+    },
+    {
+      "id": "int-1e9df30c5f",
+      "name": "Temps_douverture",
+      "utterances_with_slots": [
+        "Quelles sont vos heures d'ouvertures ?",
+        "À quel moment puis-je vous visiter ?",
+        "À quel moment puis-je visiter Cinaf ?",
+        "Quand est-ce que Cinaf commence ses activités ?",
+        "Cinaf ouvre à partir de quelle heure chaque jour ?",
+        "De quelle heure à quelle heure Cinaf est-il ouvert ?",
+        "Pouvez-vous me préciser l'heure d'ouverture de Cinaf ?",
+        "À quelle heure commence le service de Cinaf ?",
+        "Quand est-ce que Cinaf ouvre pour les visiteurs ?",
+        "Quels sont les jours et heures où Cinaf est ouvert ?"
+      ]
+    },
+    {
+      "id": "int-566e54e58f",
+      "name": "series",
+      "utterances_with_slots": [
+        "Q﻿uelles sont les séries qu'on retrouve sur cinaf ?",
+        "d﻿onne moi le nom de certaines séries de cinaf",
+        "j﻿e veux connaitre les séries de cette structure"
+      ]
+    },
+    {
+      "id": "int-6d183318b6",
+      "name": "telecharger_cinaf_app",
+      "utterances_with_slots": [
+        "Comment puis-je télécharger l'application CINAF sur mon téléphone ?\r",
+        "Existe-t-il une version de l'application CINAF pour les ordinateurs ?\r",
+        "Quels sont les prérequis pour installer l'application CINAF sur un appareil Android ?\r",
+        "L'application CINAF est-elle disponible sur l'App Store pour les utilisateurs d'iPhone ?\r",
+        "Y a-t-il des frais associés au téléchargement de l'application CINAF ?\r",
+        "Comment vérifier si mon téléphone est compatible avec l'application CINAF ?\r",
+        "Quelles étapes dois-je suivre pour installer l'application CINAF sur un émulateur Android ?\r",
+        "L'application CINAF nécessite-t-elle une connexion Internet pour être téléchargée ?\r",
+        "Comment puis-je résoudre les problèmes de téléchargement de l'application CINAF ?\r",
+        "Y a-t-il des mises à jour fréquentes pour l'application CINAF après son téléchargement ?\r",
+        "Où puis-je trouver des avis ou des commentaires sur l'application CINAF avant de la télécharger ?"
+      ]
+    },
+    {
+      "id": "int-b11e2765b4",
+      "name": "contenus_dispo",
+      "utterances_with_slots": [
+        "Quels types de films sont disponibles sur la plateforme CINAF ?\r",
+        "Y a-t-il des séries africaines proposées sur CINAF ?\r",
+        "CINAF offre-t-elle des animations ou des contenus pour enfants ?\r",
+        "Quels genres de programmes culturels peut-on trouver sur CINAF ?\r",
+        "Est-ce que CINAF propose des courts-métrages en plus des longs-métrages ?\r",
+        "Y a-t-il des documentaires disponibles sur la plateforme CINAF ?\r",
+        "Comment puis-je accéder aux événements en ligne organisés par CINAF, comme les projections ou festivals ?\r",
+        "CINAF met-elle en avant des talents émergents du cinéma africain ?\r",
+        "Quels types de contenus exclusifs sont disponibles uniquement sur CINAF ?\r",
+        "Peut-on trouver des critiques ou des analyses de films sur la plateforme CINAF ?\r",
+        "L'application CINAF propose-t-elle des fonctionnalités pour découvrir de nouveaux contenus recommandés ?"
+      ]
+    },
+    {
+      "id": "int-cancel",
+      "name": "",
+      "utterances_with_slots": []
+    },
+    {
+      "id": "int-d9f64420f1",
+      "name": "creation_compte",
+      "utterances_with_slots": [
+        "Comment puis-je créer un compte sur la plateforme Cinaf ?\r",
+        "Quelles informations sont nécessaires pour m'inscrire sur Cinaf ?\r",
+        "Existe-t-il une option de connexion via les réseaux sociaux sur Cinaf ?\r",
+        "c﻿omment configurez mon compte ?",
+        "Comment puis-je vérifier mon adresse e-mail après m'être inscrit sur Cinaf ?\r",
+        "Y a-t-il des frais d'inscription pour créer un compte sur la plateforme ?\r",
+        "Puis-je utiliser le même compte pour accéder à l'application mobile et au site web de Cinaf ?\r",
+        "Comment modifier mes informations de profil après avoir créé mon compte ?\r",
+        "Quels types de paiements sont acceptés lors de l'inscription sur Cinaf ?\r",
+        "Est-ce que je peux annuler mon abonnement directement depuis mon compte ?\r",
+        "Comment contacter le support client si je rencontre des problèmes lors de la création de mon compte ?"
+      ]
+    },
+    {
+      "id": "int-no",
+      "name": "no",
+      "utterances_with_slots": [
+        "no",
+        "i don't want to",
+        "absolutely not",
+        "nah",
+        "nope",
+        "not really",
+        "not sure",
+        "no thanks"
+      ]
+    },
+    {
+      "id": "int-yes",
+      "name": "yes",
+      "utterances_with_slots": [
+        "yes",
+        "yeah",
+        "absolutely",
+        "i'd like to",
+        "sure ",
+        "hmm probably",
+        "yup",
+        "ok"
+      ]
+    }
+  ],
+  "list_entities": [
+    {
+      "fuzzy": "medium",
+      "id": "ent-065531979d",
+      "name": "abonnement",
+      "occurrences": [
+        {
+          "name": "abonnement cinaf",
+          "synonyms": [
+            "Adhésion à la plateforme CINAF",
+            "Forfait CINAF",
+            "Engagement CINAF",
+            "Plan de visionnage CINAF",
+            "Membership",
+            "Contrat de streaming",
+            "Offre d'accès",
+            "Service payant",
+            "Accès premium",
+            "souscription abonnement"
+          ]
+        }
+      ]
+    },
+    {
+      "fuzzy": "medium",
+      "id": "ent-492219059f",
+      "name": "disponibilité contenus",
+      "occurrences": [
+        {
+          "name": "Accessibilité du contenu",
+          "synonyms": [
+            "Offre de contenu",
+            "Présence du contenu",
+            "Disponibilité des ressources",
+            "Accès au contenu",
+            "Proposition de contenu",
+            "État d'accès au contenu",
+            "Liberté d'accès au contenu",
+            "Mise à disposition du contenu",
+            "Disponibilité des informations"
+          ]
+        }
+      ]
+    },
+    {
+      "fuzzy": "medium",
+      "id": "ent-50e90c939c",
+      "name": "temps_ouverture",
+      "occurrences": [
+        {
+          "name": "disponibilité",
+          "synonyms": [
+            "ouvert",
+            "accessibilité",
+            "présence",
+            "liberté",
+            "offre",
+            "prêt",
+            "possibilité",
+            "capacité",
+            "ouverture",
+            "disponibilité immédiate"
+          ]
+        }
+      ]
+    },
+    {
+      "fuzzy": "medium",
+      "id": "ent-6a8353b45c",
+      "name": "installation",
+      "occurrences": [
+        {
+          "name": "Installer l'application",
+          "synonyms": [
+            "Obtenir l'application",
+            "Récupérer l'application",
+            "Transférer l'application",
+            "Acquérir l'application",
+            "Charger l'application",
+            "Mettre en place l'application",
+            "Procéder au téléchargement de l'application",
+            "Faire un téléchargement de l'application",
+            "Accéder à l'application par téléchargement"
+          ]
+        }
+      ]
+    },
+    {
+      "fuzzy": "medium",
+      "id": "ent-d390025df9",
+      "name": "creation_compte",
+      "occurrences": [
+        {
+          "name": "création compte",
+          "synonyms": [
+            "Ouverture de compte",
+            "Établissement de compte",
+            "Mise en place du compte",
+            "Enregistrement",
+            "Configuration du compte",
+            "Formation de compte",
+            "Activation du compte",
+            "Création d'un profil",
+            "inscription"
+          ]
+        }
+      ]
+    }
+  ],
+  "pattern_entities": [],
+  "actions": [],
+  "hooks": [],
+  "qnas": [],
+  "knowledge_base": [],
+  "folders": [],
+  "agents": {
+    "SummaryAgent": {
+      "enabled": true,
+      "config": {
+        "summaryMaxTokens": 100
+      }
+    },
+    "TranslatorAgent": {
+      "config": {
+        "detectLanguage": true
+      }
+    },
+    "KnowledgeAgent": {
+      "enabled": true,
+      "config": {
+        "answerManually": true,
+        "context": "Summary of the conversation:\n\"\"\"\n{{conversation.SummaryAgent.summary}}\n\"\"\"\n\nTranscript:\n\"\"\"\n{{conversation.SummaryAgent.transcript}}\n\"\"\"",
+        "bestModel": "gpt-4-turbo",
+        "fastestModel": "fast-model",
+        "questionModel": "fast-model",
+        "strategy": "hybrid",
+        "chunks": 50
+      }
+    },
+    "PersonalityAgent": {
+      "config": {
+        "personality": ""
+      }
+    }
+  },
+  "tables": {
+    "table_01J829G7R1BMFAD1V429WSC76P": {
+      "id": "table_01J829G7R1BMFAD1V429WSC76P",
+      "name": "RouterAgentTable",
+      "factor": 1,
+      "frozen": false,
+      "tags": {},
+      "createdAt": "2024-09-18T10:05:31.267Z",
+      "updatedAt": "2024-09-18T10:05:31.267Z",
+      "createdBy": "user:18f9729b-f94e-45fb-a87e-8e9fef1f1f59",
+      "updatedBy": null,
+      "isComputeEnabled": false,
+      "schema": {
+        "type": "object",
+        "x-zui": {},
+        "required": [
+          "phrase",
+          "intentId",
+          "phraseId"
+        ],
+        "properties": {
+          "phrase": {
+            "type": "string",
+            "x-zui": {
+              "index": 0,
+              "searchable": true
+            }
+          },
+          "intentId": {
+            "type": "string",
+            "x-zui": {
+              "index": 1,
+              "searchable": true
+            }
+          },
+          "phraseId": {
+            "type": "string",
+            "x-zui": {
+              "index": 2,
+              "searchable": true
+            }
+          }
+        },
+        "additionalProperties": true
+      },
+      "parentFolder": "root",
+      "selectors": []
+    }
+  },
+  "schemas": [],
+  "versions": [
+    {
+      "name": "24 Sep 24 04:51",
+      "id": "version_01J8JBP10BV8ZYYG1QV7F7YWPW"
+    },
+    {
+      "name": "24 Sep 24 03:25",
+      "id": "version_01J8J6RGV6EVRNC52QEBFPGP4W"
+    },
+    {
+      "name": "24 Sep 24 02:53",
+      "id": "version_01J8J4XSZFC8CASWA38QJSQ4CZ"
+    }
+  ]
+}
